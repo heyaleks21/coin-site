@@ -46,6 +46,7 @@ export default function HeroSlideshow() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [imagesLoaded, setImagesLoaded] = useState(false)
+  const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false)
 
   // Preload all images to prevent flash
   useEffect(() => {
@@ -59,8 +60,19 @@ export default function HeroSlideshow() {
     })
 
     Promise.all(imagePromises)
-      .then(() => setImagesLoaded(true))
-      .catch(() => setImagesLoaded(true)) // Continue even if some images fail
+      .then(() => {
+        setImagesLoaded(true)
+        // Add a small delay then trigger the initial load animation
+        setTimeout(() => {
+          setHasInitiallyLoaded(true)
+        }, 100)
+      })
+      .catch(() => {
+        setImagesLoaded(true)
+        setTimeout(() => {
+          setHasInitiallyLoaded(true)
+        }, 100)
+      })
   }, [])
 
   useEffect(() => {
@@ -101,7 +113,11 @@ export default function HeroSlideshow() {
   if (!imagesLoaded) {
     return (
       <section className="relative w-full min-h-[calc(100vh-80px)] bg-black overflow-hidden flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+        <div className="flex items-center space-x-2">
+          <div className="w-3 h-3 bg-amber-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+          <div className="w-3 h-3 bg-amber-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+          <div className="w-3 h-3 bg-amber-500 rounded-full animate-bounce"></div>
+        </div>
       </section>
     )
   }
@@ -114,9 +130,11 @@ export default function HeroSlideshow() {
           {/* Left Content - Typography */}
           <div
             className={`text-white text-center lg:text-left space-y-4 md:space-y-6 transition-all duration-700 ease-in-out ${
-              isTransitioning
-                ? "opacity-0 transform translate-y-4 lg:translate-y-0 lg:translate-x-[-20px]"
-                : "opacity-100 transform translate-y-0 lg:translate-x-0"
+              !hasInitiallyLoaded
+                ? "opacity-0 transform translate-y-8 lg:translate-y-0 lg:translate-x-[-40px]"
+                : isTransitioning
+                  ? "opacity-0 transform translate-y-4 lg:translate-y-0 lg:translate-x-[-20px]"
+                  : "opacity-100 transform translate-y-0 lg:translate-x-0"
             }`}
           >
             <div className="space-y-2 md:space-y-4">
@@ -147,9 +165,11 @@ export default function HeroSlideshow() {
             <div className="relative w-full max-w-md sm:max-w-lg md:max-w-md lg:max-w-lg xl:max-w-xl">
               <div
                 className={`relative w-full h-auto aspect-[3/2] mx-auto flex items-center justify-center transition-all duration-700 ease-in-out ${
-                  isTransitioning
-                    ? "opacity-0 transform translate-y-4 lg:translate-y-0 lg:translate-x-[20px] scale-95"
-                    : "opacity-100 transform translate-y-0 lg:translate-x-0 scale-100"
+                  !hasInitiallyLoaded
+                    ? "opacity-0 transform translate-y-8 lg:translate-y-0 lg:translate-x-[40px] scale-90"
+                    : isTransitioning
+                      ? "opacity-0 transform translate-y-4 lg:translate-y-0 lg:translate-x-[20px] scale-95"
+                      : "opacity-100 transform translate-y-0 lg:translate-x-0 scale-100"
                 }`}
               >
                 {/* Mobile-optimized glow - reduced blur and opacity */}
