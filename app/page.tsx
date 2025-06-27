@@ -5,14 +5,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Star, Shield, Truck, Award } from "lucide-react"
+import { Award, Play, Users } from "lucide-react"
 import HeroSlideshow from "@/components/HeroSlideshow"
 import Navigation from "@/components/Navigation"
 import { getProducts, type Product } from "@/lib/supabase-admin"
 
 export default function HomePage() {
-  const [searchQuery, setSearchQuery] = useState("")
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -46,38 +44,82 @@ export default function HomePage() {
       {/* Hero Slideshow */}
       <HeroSlideshow />
 
-      {/* Features */}
-      <section className="py-16 px-4 bg-white">
+      {/* Compact Live Stream Section */}
+      <section className="py-6 px-4 bg-gradient-to-r from-slate-800 to-purple-800">
         <div className="container mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield className="h-8 w-8 text-amber-600" />
+          <div className="grid md:grid-cols-3 gap-6 items-center">
+            {/* Live Stream Info */}
+            <div className="text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
+                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                <span className="text-white font-bold text-sm">LIVE</span>
+                <Users className="w-4 h-4 text-white" />
+                <span className="text-white text-sm">1,247</span>
               </div>
-              <h3 className="font-semibold text-lg mb-2">Authenticated</h3>
-              <p className="text-gray-600">Every coin professionally graded and verified</p>
+              <h2 className="text-2xl font-bold text-white mb-2">
+                <Link
+                  href="https://www.tiktok.com/@aussiecoins"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:no-underline"
+                >
+                  Live TikTok Stream
+                </Link>
+              </h2>
+              <p className="text-gray-300 text-sm mb-4">Watch live coin discoveries</p>
+              <Link href="https://www.tiktok.com/@aussiecoins" target="_blank" rel="noopener noreferrer">
+                <Button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm flex items-center gap-2">
+                  <Play className="w-4 h-4" />
+                  Watch Now
+                </Button>
+              </Link>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Award className="h-8 w-8 text-amber-600" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Premium Quality</h3>
-              <p className="text-gray-600">Carefully selected coins in excellent condition</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Truck className="h-8 w-8 text-amber-600" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Fast Shipping</h3>
-              <p className="text-gray-600">Secure packaging and express delivery</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Star className="h-8 w-8 text-amber-600" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">Expert Service</h3>
-              <p className="text-gray-600">30+ years of numismatic expertise</p>
-            </div>
+
+            {/* Coin Roll Noodling */}
+            <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <Image
+                    src="/images/coin-roll.svg"
+                    alt="Coin Roll"
+                    width={40}
+                    height={40}
+                    className="object-contain"
+                  />
+                  <div>
+                    <h3 className="font-bold text-white">Coin Roll Noodling</h3>
+                    <p className="text-xs text-gray-300">From $5</p>
+                  </div>
+                </div>
+                <Link href="/catalog?category=noodling">
+                  <Button className="w-full bg-amber-500 hover:bg-amber-600 text-white py-2 text-sm">
+                    Sponsor Roll
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+
+            {/* Lucky Dips */}
+            <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <Image
+                    src="/images/red-poppy.jpg"
+                    alt="Lucky Dip"
+                    width={40}
+                    height={40}
+                    className="object-contain rounded-full"
+                  />
+                  <div>
+                    <h3 className="font-bold text-white">Lucky Dips</h3>
+                    <p className="text-xs text-gray-300">From $10</p>
+                  </div>
+                </div>
+                <Link href="/catalog?category=lucky-dips">
+                  <Button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 text-sm">Get Lucky Dip</Button>
+                </Link>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -169,7 +211,7 @@ export default function HomePage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white"
+                className="border-amber-600 text-amber-600 hover:bg-amber-600 hover:text-white bg-transparent"
               >
                 View All Products
               </Button>
@@ -178,97 +220,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Newsletter */}
-      <section className="py-16 px-4 bg-amber-600">
+      {/* TikTok CTA */}
+      <section className="py-16 px-4 bg-gradient-to-r from-slate-800 to-purple-800">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Stay Updated</h2>
-          <p className="text-amber-100 mb-8 text-lg">Get notified about new arrivals and special offers</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
-            <Input
-              placeholder="Enter your email"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-white/10 border-white/20 text-white placeholder:text-amber-100"
-            />
-            <Button className="bg-white text-amber-600 hover:bg-amber-50 px-8">Subscribe</Button>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse"></div>
+            <span className="text-white font-bold">LIVE NOW</span>
           </div>
+          <h2 className="text-3xl font-bold text-white mb-4">Watch Live Coin Roll Noodling</h2>
+          <p className="text-gray-300 mb-8 text-lg">Join thousands watching live coin discoveries on TikTok</p>
+          <Link href="https://www.tiktok.com/@aussiecoins" target="_blank" rel="noopener noreferrer">
+            <Button className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 text-lg flex items-center gap-2 mx-auto">
+              <Play className="w-5 h-5" />
+              Watch Live on TikTok
+            </Button>
+          </Link>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold">AC</span>
-                </div>
-                <span className="font-bold text-lg">Aussie Coins</span>
-              </div>
-              <p className="text-gray-400">
-                Australia's premier destination for collectible coins and numismatic treasures.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link href="/catalog" className="hover:text-white transition-colors">
-                    Catalog
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about" className="hover:text-white transition-colors">
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-white transition-colors">
-                    Shipping
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Categories</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link href="/catalog?category=1" className="hover:text-white transition-colors">
-                    Pre-Decimal
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/catalog?category=2" className="hover:text-white transition-colors">
-                    Decimal
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/catalog?category=3" className="hover:text-white transition-colors">
-                    Commemorative
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/catalog?category=9" className="hover:text-white transition-colors">
-                    Gold Coins
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Contact Info</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>📧 info@aussiecoins.com.au</li>
-                <li>📞 1300 COINS (26467)</li>
-                <li>📍 Adelaide, South Australia</li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Aussie Coins. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }

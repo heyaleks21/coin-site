@@ -8,7 +8,18 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ArrowLeft, DollarSign, Upload, CheckCircle, Clock, Package, Banknote, Coins, ShieldCheck } from "lucide-react"
+import {
+  ArrowLeft,
+  DollarSign,
+  Upload,
+  CheckCircle,
+  Clock,
+  Package,
+  Banknote,
+  Coins,
+  ShieldCheck,
+  Play,
+} from "lucide-react"
 import Navigation from "@/components/Navigation"
 
 export default function SellToUsPage() {
@@ -194,7 +205,7 @@ export default function SellToUsPage() {
           </div>
         </section>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-12 mb-16">
           {/* Selling Form */}
           <section>
             <Card className="shadow-xl">
@@ -436,66 +447,25 @@ export default function SellToUsPage() {
             </Card>
           </section>
         </div>
-      </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4 mt-16">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold">AC</span>
-                </div>
-                <span className="font-bold text-lg">Aussie Coins</span>
-              </div>
-              <p className="text-gray-400">
-                Australia's premier destination for collectible coins and numismatic treasures.
-              </p>
+        {/* TikTok CTA */}
+        <section className="py-16 px-4 bg-gradient-to-r from-slate-800 to-purple-800 rounded-lg">
+          <div className="container mx-auto text-center">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse"></div>
+              <span className="text-white font-bold">LIVE NOW</span>
             </div>
-            <div>
-              <h3 className="font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link href="/catalog" className="hover:text-white transition-colors">
-                    Catalog
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about" className="hover:text-white transition-colors">
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-white transition-colors">
-                    Contact
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Categories</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>Pre-Decimal</li>
-                <li>Decimal</li>
-                <li>Commemorative</li>
-                <li>Gold Coins</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Contact Info</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>📧 info@aussiecoins.com.au</li>
-                <li>📞 1300 COINS (26467)</li>
-                <li>📍 Adelaide, South Australia</li>
-              </ul>
-            </div>
+            <h2 className="text-3xl font-bold text-white mb-4">Watch Live Coin Roll Noodling</h2>
+            <p className="text-gray-300 mb-8 text-lg">Join thousands watching live coin discoveries on TikTok</p>
+            <Link href="https://www.tiktok.com/@aussiecoins" target="_blank" rel="noopener noreferrer">
+              <Button className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 text-lg flex items-center gap-2 mx-auto">
+                <Play className="w-5 h-5" />
+                Watch Live on TikTok
+              </Button>
+            </Link>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Aussie Coins. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+        </section>
+      </div>
     </div>
   )
 }
