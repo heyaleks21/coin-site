@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Award, Play, Users } from "lucide-react"
@@ -11,6 +12,7 @@ import Navigation from "@/components/Navigation"
 import { getProducts, getCategories, type Product, type Category } from "@/lib/supabase-admin"
 
 export default function HomePage() {
+  const router = useRouter()
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [categories, setCategories] = useState<Category[]>([])
@@ -52,10 +54,24 @@ export default function HomePage() {
   // Find category IDs
   // Assuming the category names in your database are "Coin Roll Noodling" and "Lucky Dip"
   const coinRollNoodlingCategory = categories.find((cat) => cat.name === "Coin Roll Noodling")
-  const luckyDipCategory = categories.find((cat) => cat.name === "Lucky Dip") // Changed from "Lucky Dips"
+  const luckyDipCategory = categories.find((cat) => cat.name === "Lucky Dip")
 
   const coinRollNoodlingCategoryId = coinRollNoodlingCategory ? coinRollNoodlingCategory.id.toString() : ""
   const luckyDipCategoryId = luckyDipCategory ? luckyDipCategory.id.toString() : ""
+
+  const handleSponsorRollClick = () => {
+    if (coinRollNoodlingCategoryId) {
+      sessionStorage.setItem("preSelectedCategory", coinRollNoodlingCategoryId)
+    }
+    router.push("/catalog")
+  }
+
+  const handleLuckyDipClick = () => {
+    if (luckyDipCategoryId) {
+      sessionStorage.setItem("preSelectedCategory", luckyDipCategoryId)
+    }
+    router.push("/catalog")
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
@@ -87,12 +103,14 @@ export default function HomePage() {
                 </Link>
               </h2>
               <p className="text-gray-300 text-sm mb-4">Watch live coin discoveries</p>
-              <Link href="https://www.tiktok.com/@aussiecoins" target="_blank" rel="noopener noreferrer">
-                <Button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm flex items-center gap-2">
-                  <Play className="w-4 h-4" />
-                  Watch Now
-                </Button>
-              </Link>
+              <div className="flex justify-center md:justify-start">
+                <Link href="https://www.tiktok.com/@aussiecoins" target="_blank" rel="noopener noreferrer">
+                  <Button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm flex items-center gap-2">
+                    <Play className="w-4 h-4" />
+                    Watch Now
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             {/* Coin Roll Noodling */}
@@ -113,12 +131,7 @@ export default function HomePage() {
                 </div>
                 <Button
                   className="w-full bg-amber-500 hover:bg-amber-600 text-white py-2 text-sm"
-                  onClick={() => {
-                    if (coinRollNoodlingCategoryId) {
-                      sessionStorage.setItem("preSelectedCategory", coinRollNoodlingCategoryId)
-                    }
-                    window.location.href = "/catalog"
-                  }}
+                  onClick={handleSponsorRollClick}
                 >
                   Sponsor Roll
                 </Button>
@@ -143,12 +156,7 @@ export default function HomePage() {
                 </div>
                 <Button
                   className="w-full bg-red-500 hover:bg-red-600 text-white py-2 text-sm"
-                  onClick={() => {
-                    if (luckyDipCategoryId) {
-                      sessionStorage.setItem("preSelectedCategory", luckyDipCategoryId)
-                    }
-                    window.location.href = "/catalog"
-                  }}
+                  onClick={handleLuckyDipClick}
                 >
                   Get Lucky Dip
                 </Button>
