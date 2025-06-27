@@ -67,7 +67,7 @@ export default function HomePage() {
       {/* Compact Live Stream Section */}
       <section className="py-6 px-4 bg-gradient-to-r from-slate-800 to-purple-800">
         <div className="container mx-auto">
-          <div className="grid md:grid-cols-3 gap-6 items-center">
+          <div className="grid md:grid-cols-3 gap-6 items-center max-w-4xl mx-auto">
             {/* Live Stream Info */}
             <div className="text-center md:text-left">
               <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
