@@ -44,28 +44,38 @@ export default function CatalogPage() {
 
   const { addItem } = useCart()
 
-  useEffect(() => {
-    loadData()
-  }, [])
-
-  useEffect(() => {
-    if (categoryParam) {
-      setSelectedCategory(categoryParam)
-    }
-  }, [categoryParam])
-
   const loadData = async () => {
     try {
       setLoading(true)
       const [productsData, categoriesData] = await Promise.all([getProducts(), getCategories()])
       setProducts(productsData.filter((product) => product.is_active))
       setCategories(categoriesData)
+
+      // Check for pre-selected category from sessionStorage
+      const preSelectedCategory = sessionStorage.getItem("preSelectedCategory")
+      if (preSelectedCategory && !categoryParam) {
+        setSelectedCategory(preSelectedCategory)
+        sessionStorage.removeItem("preSelectedCategory") // Clean up after use
+      }
     } catch (error) {
       console.error("Error loading data:", error)
     } finally {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    loadData()
+  }, [])
+
+  useEffect(() => {
+    // This effect ensures that if a category parameter is present in the URL
+    // when the page loads, the selectedCategory state is initialized with it.
+    // It does NOT update the URL when filters are changed on the page.
+    if (categoryParam) {
+      setSelectedCategory(categoryParam)
+    }
+  }, [categoryParam])
 
   const handleAddToCartClick = (product: Product) => {
     setSelectedProduct(product)
@@ -249,7 +259,7 @@ export default function CatalogPage() {
                 <div className="pt-2">
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className="w-full bg-transparent"
                     onClick={() => {
                       setSearchQuery("")
                       setSelectedCategory("all")
@@ -333,7 +343,7 @@ export default function CatalogPage() {
                         </div>
                         <div className="flex gap-2">
                           <Link href={`/product/${product.id}`} className="flex-1">
-                            <Button variant="outline" className="w-full">
+                            <Button variant="outline" className="w-full bg-transparent">
                               View Details
                             </Button>
                           </Link>

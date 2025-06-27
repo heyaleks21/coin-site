@@ -8,17 +8,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Award, Play, Users } from "lucide-react"
 import HeroSlideshow from "@/components/HeroSlideshow"
 import Navigation from "@/components/Navigation"
-import { getProducts, type Product } from "@/lib/supabase-admin"
+import { getProducts, getCategories, type Product, type Category } from "@/lib/supabase-admin"
 
 export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
+  const [categories, setCategories] = useState<Category[]>([])
+  const [categoriesLoading, setCategoriesLoading] = useState(true)
 
   useEffect(() => {
-    const loadFeaturedProducts = async () => {
+    const loadData = async () => {
       try {
+        // Load featured products
         const products = await getProducts()
-        // Get featured products, or if none are featured, get the first 4 active products
         let featured = products.filter((product) => product.is_featured && product.is_active)
         if (featured.length === 0) {
           featured = products.filter((product) => product.is_active).slice(0, 4)
@@ -28,14 +30,32 @@ export default function HomePage() {
         setFeaturedProducts(featured)
       } catch (error) {
         console.error("Error loading featured products:", error)
-        // If there's an error, we'll show empty state
         setFeaturedProducts([])
       } finally {
         setLoading(false)
       }
+
+      try {
+        // Load categories
+        const categoriesData = await getCategories()
+        setCategories(categoriesData)
+      } catch (error) {
+        console.error("Error loading categories:", error)
+        setCategories([])
+      } finally {
+        setCategoriesLoading(false)
+      }
     }
-    loadFeaturedProducts()
+    loadData()
   }, [])
+
+  // Find category IDs
+  // Assuming the category names in your database are "Coin Roll Noodling" and "Lucky Dip"
+  const coinRollNoodlingCategory = categories.find((cat) => cat.name === "Coin Roll Noodling")
+  const luckyDipCategory = categories.find((cat) => cat.name === "Lucky Dip") // Changed from "Lucky Dips"
+
+  const coinRollNoodlingCategoryId = coinRollNoodlingCategory ? coinRollNoodlingCategory.id.toString() : ""
+  const luckyDipCategoryId = luckyDipCategory ? luckyDipCategory.id.toString() : ""
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
@@ -91,11 +111,17 @@ export default function HomePage() {
                     <p className="text-xs text-gray-300">From $5</p>
                   </div>
                 </div>
-                <Link href="/catalog?category=noodling">
-                  <Button className="w-full bg-amber-500 hover:bg-amber-600 text-white py-2 text-sm">
-                    Sponsor Roll
-                  </Button>
-                </Link>
+                <Button
+                  className="w-full bg-amber-500 hover:bg-amber-600 text-white py-2 text-sm"
+                  onClick={() => {
+                    if (coinRollNoodlingCategoryId) {
+                      sessionStorage.setItem("preSelectedCategory", coinRollNoodlingCategoryId)
+                    }
+                    window.location.href = "/catalog"
+                  }}
+                >
+                  Sponsor Roll
+                </Button>
               </CardContent>
             </Card>
 
@@ -115,9 +141,17 @@ export default function HomePage() {
                     <p className="text-xs text-gray-300">From $10</p>
                   </div>
                 </div>
-                <Link href="/catalog?category=lucky-dips">
-                  <Button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 text-sm">Get Lucky Dip</Button>
-                </Link>
+                <Button
+                  className="w-full bg-red-500 hover:bg-red-600 text-white py-2 text-sm"
+                  onClick={() => {
+                    if (luckyDipCategoryId) {
+                      sessionStorage.setItem("preSelectedCategory", luckyDipCategoryId)
+                    }
+                    window.location.href = "/catalog"
+                  }}
+                >
+                  Get Lucky Dip
+                </Button>
               </CardContent>
             </Card>
           </div>
