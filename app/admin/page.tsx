@@ -386,7 +386,6 @@ function AdminDashboard() {
     }
   }
 
-  // Update the handleEditProduct function to handle image cleanup
   const handleEditProduct = async () => {
     try {
       if (!editingProduct || !editingProduct.name || !editingProduct.price || !editingProduct.category_id) {
@@ -461,7 +460,6 @@ function AdminDashboard() {
     }
   }
 
-  // Update the handleDeleteProduct function to show confirmation with image count
   const handleDeleteProduct = async (id: number) => {
     try {
       const product = products.find((p) => p.id === id)
@@ -1492,7 +1490,7 @@ function AdminDashboard() {
                             }}
                           >
                             <SelectTrigger>
-                              <SelectValue />
+                              <SelectValue placeholder="Select a slide type" />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="manual">Manual Slide</SelectItem>
@@ -2080,7 +2078,7 @@ function AdminDashboard() {
                     }}
                   >
                     <SelectTrigger>
-                      <SelectValue />
+                      <SelectValue placeholder="Select a slide type" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="manual">Manual Slide</SelectItem>
