@@ -861,7 +861,21 @@ function AdminDashboard() {
   }
 
   const openEditHeroDialog = (heroSlide: HeroSlide) => {
-    setEditingHeroSlide({ ...heroSlide })
+    // Ensure all properties are properly set with fallbacks
+    setEditingHeroSlide({
+      ...heroSlide,
+      title: heroSlide.title || "",
+      subtitle: heroSlide.subtitle || "",
+      image_url: heroSlide.image_url || null,
+      price: heroSlide.price || "",
+      coins: heroSlide.coins || "",
+      years: heroSlide.years || "",
+      custom_link: heroSlide.custom_link || "",
+      is_active: heroSlide.is_active ?? true,
+      display_order: heroSlide.display_order || 0,
+      slide_type: heroSlide.slide_type || "manual",
+      product_id: heroSlide.product_id || null,
+    })
     setIsEditHeroDialogOpen(true)
   }
 
@@ -2068,7 +2082,7 @@ function AdminDashboard() {
                 <div>
                   <Label>Slide Type</Label>
                   <Select
-                    value={editingHeroSlide.slide_type}
+                    value={editingHeroSlide.slide_type || "manual"}
                     onValueChange={(value: "manual" | "product") => {
                       setEditingHeroSlide({
                         ...editingHeroSlide,
@@ -2117,7 +2131,7 @@ function AdminDashboard() {
                     <Label htmlFor="edit-hero-title">Title *</Label>
                     <Input
                       id="edit-hero-title"
-                      value={editingHeroSlide.title}
+                      value={editingHeroSlide.title || ""}
                       onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, title: e.target.value })}
                       placeholder="e.g., COMPLETE SET"
                     />
@@ -2126,7 +2140,7 @@ function AdminDashboard() {
                     <Label htmlFor="edit-hero-subtitle">Subtitle *</Label>
                     <Input
                       id="edit-hero-subtitle"
-                      value={editingHeroSlide.subtitle}
+                      value={editingHeroSlide.subtitle || ""}
                       onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, subtitle: e.target.value })}
                       placeholder="e.g., $2 COMMEMORATIVE COIN COLLECTION"
                     />
@@ -2237,9 +2251,9 @@ function AdminDashboard() {
                     <Input
                       id="edit-hero-order"
                       type="number"
-                      value={editingHeroSlide.display_order}
+                      value={editingHeroSlide.display_order || 0}
                       onChange={(e) =>
-                        setEditingHeroSlide({ ...editingHeroSlide, display_order: Number(e.target.value) })
+                        setEditingHeroSlide({ ...editingHeroSlide, display_order: Number(e.target.value) || 0 })
                       }
                       min="1"
                     />
@@ -2248,7 +2262,7 @@ function AdminDashboard() {
                     <input
                       type="checkbox"
                       id="edit-hero-is_active"
-                      checked={editingHeroSlide.is_active}
+                      checked={editingHeroSlide.is_active ?? true}
                       onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, is_active: e.target.checked })}
                     />
                     <Label htmlFor="edit-hero-is_active">Active</Label>
@@ -2279,7 +2293,7 @@ function AdminDashboard() {
                       {editingHeroSlide.image_url && (
                         <div className="relative w-32 h-20 border rounded overflow-hidden">
                           <NextImage
-                            src={editingHeroSlide.image_url || "/placeholder.svg"}
+                            src={editingHeroSlide.image_url}
                             alt="Hero preview"
                             fill
                             className="object-cover"
@@ -2295,12 +2309,7 @@ function AdminDashboard() {
                   <div>
                     <Label>Product Image Preview</Label>
                     <div className="relative w-32 h-20 border rounded overflow-hidden">
-                      <NextImage
-                        src={editingHeroSlide.image_url || "/placeholder.svg"}
-                        alt="Product preview"
-                        fill
-                        className="object-cover"
-                      />
+                      <NextImage src={editingHeroSlide.image_url} alt="Product preview" fill className="object-cover" />
                     </div>
                   </div>
                 )}
