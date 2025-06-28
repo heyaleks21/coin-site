@@ -283,7 +283,6 @@ function AdminDashboard() {
     price: "",
     coins: "",
     years: "",
-    custom_link: "",
     is_active: true,
     display_order: 0,
     slide_type: "manual",
@@ -386,6 +385,7 @@ function AdminDashboard() {
     }
   }
 
+  // Update the handleEditProduct function to handle image cleanup
   const handleEditProduct = async () => {
     try {
       if (!editingProduct || !editingProduct.name || !editingProduct.price || !editingProduct.category_id) {
@@ -460,6 +460,7 @@ function AdminDashboard() {
     }
   }
 
+  // Update the handleDeleteProduct function to show confirmation with image count
   const handleDeleteProduct = async (id: number) => {
     try {
       const product = products.find((p) => p.id === id)
@@ -742,8 +743,6 @@ function AdminDashboard() {
 
       await createHeroSlide(heroSlideData)
       await loadData()
-
-      // Reset the form after successful creation
       setNewHeroSlide({
         title: "",
         subtitle: "",
@@ -751,13 +750,11 @@ function AdminDashboard() {
         price: "",
         coins: "",
         years: "",
-        custom_link: "",
         is_active: true,
         display_order: 0,
         slide_type: "manual",
         product_id: null,
       })
-
       setIsAddHeroDialogOpen(false)
       toast({
         title: "Success",
@@ -861,21 +858,7 @@ function AdminDashboard() {
   }
 
   const openEditHeroDialog = (heroSlide: HeroSlide) => {
-    // Ensure all properties are properly set with fallbacks
-    setEditingHeroSlide({
-      ...heroSlide,
-      title: heroSlide.title || "",
-      subtitle: heroSlide.subtitle || "",
-      image_url: heroSlide.image_url || null,
-      price: heroSlide.price || "",
-      coins: heroSlide.coins || "",
-      years: heroSlide.years || "",
-      custom_link: heroSlide.custom_link || "",
-      is_active: heroSlide.is_active ?? true,
-      display_order: heroSlide.display_order || 0,
-      slide_type: heroSlide.slide_type || "manual",
-      product_id: heroSlide.product_id || null,
-    })
+    setEditingHeroSlide({ ...heroSlide })
     setIsEditHeroDialogOpen(true)
   }
 
@@ -1489,7 +1472,7 @@ function AdminDashboard() {
                         <DialogTitle>Add New Hero Slide</DialogTitle>
                         <DialogDescription>Create a new hero slide for the homepage</DialogDescription>
                       </DialogHeader>
-                      <div className="grid gap-6 py-4">
+                      <div className="grid gap-4 py-4">
                         {/* Slide Type Selection */}
                         <div>
                           <Label>Slide Type</Label>
@@ -1537,7 +1520,40 @@ function AdminDashboard() {
                           </div>
                         )}
 
-                        {/* Title and Subtitle */}
+                        {/* Product Link Selection for Manual Slides */}
+                        {newHeroSlide.slide_type === "manual" && (
+                          <div>
+                            <Label>Link to Product (Optional)</Label>
+                            <Select
+                              value={newHeroSlide.product_id?.toString() || ""}
+                              onValueChange={(value) => {
+                                setNewHeroSlide({
+                                  ...newHeroSlide,
+                                  product_id: value ? Number(value) : null,
+                                })
+                              }}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Choose a product to link to (optional)" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="">No product link</SelectItem>
+                                {products
+                                  .filter((p) => p.is_active)
+                                  .map((product) => (
+                                    <SelectItem key={product.id} value={product.id.toString()}>
+                                      {product.name} - ${product.price}
+                                    </SelectItem>
+                                  ))}
+                              </SelectContent>
+                            </Select>
+                            <p className="text-sm text-gray-500 mt-1">
+                              When selected, clicking the hero image will take users to this product's detail page.
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Manual Fields */}
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor="hero-title">Title *</Label>
@@ -1559,7 +1575,6 @@ function AdminDashboard() {
                           </div>
                         </div>
 
-                        {/* Price, Coins, and Years */}
                         <div className="grid grid-cols-3 gap-4">
                           <div>
                             <Label htmlFor="hero-price">Price</Label>
@@ -1589,72 +1604,6 @@ function AdminDashboard() {
                             />
                           </div>
                         </div>
-
-                        {/* Link Options for Manual Slides */}
-                        {newHeroSlide.slide_type === "manual" && (
-                          <div className="space-y-4 p-4 border rounded-lg bg-gray-50">
-                            <Label className="text-sm font-medium">Link Options</Label>
-                            <div className="space-y-3">
-                              <div>
-                                <Label className="text-sm">Link to Product (Recommended)</Label>
-                                <Select
-                                  value={newHeroSlide.product_id?.toString() || ""}
-                                  onValueChange={(value) => {
-                                    if (value) {
-                                      const product = products.find((p) => p.id === Number(value))
-                                      setNewHeroSlide({
-                                        ...newHeroSlide,
-                                        product_id: Number(value),
-                                        custom_link: `/product/${product?.slug || value}`,
-                                      })
-                                    } else {
-                                      setNewHeroSlide({
-                                        ...newHeroSlide,
-                                        product_id: null,
-                                        custom_link: "",
-                                      })
-                                    }
-                                  }}
-                                >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select a product to link to" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="">No product link</SelectItem>
-                                    {products
-                                      .filter((p) => p.is_active)
-                                      .map((product) => (
-                                        <SelectItem key={product.id} value={product.id.toString()}>
-                                          {product.name} - ${product.price}
-                                        </SelectItem>
-                                      ))}
-                                  </SelectContent>
-                                </Select>
-                              </div>
-                              <div className="text-center text-sm text-gray-500">OR</div>
-                              <div>
-                                <Label htmlFor="hero-custom-link" className="text-sm">
-                                  Custom Link
-                                </Label>
-                                <Input
-                                  id="hero-custom-link"
-                                  value={newHeroSlide.custom_link || ""}
-                                  onChange={(e) => {
-                                    setNewHeroSlide({
-                                      ...newHeroSlide,
-                                      custom_link: e.target.value,
-                                      product_id: e.target.value ? null : newHeroSlide.product_id,
-                                    })
-                                  }}
-                                  placeholder="e.g., /catalog, /about, https://external-link.com"
-                                />
-                                <p className="text-xs text-gray-500 mt-1">
-                                  Leave empty to link to catalog. Can be internal (/catalog) or external (https://...)
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        )}
 
                         {/* Image Upload for Manual Slides */}
                         {newHeroSlide.slide_type === "manual" && (
@@ -1706,7 +1655,6 @@ function AdminDashboard() {
                           </div>
                         )}
 
-                        {/* Active Checkbox */}
                         <div className="flex items-center space-x-2">
                           <input
                             type="checkbox"
@@ -1756,9 +1704,11 @@ function AdminDashboard() {
                                 {slide.price && <span>{slide.price}</span>}
                                 {slide.coins && <span>• {slide.coins}</span>}
                                 {slide.years && <span>• {slide.years}</span>}
-                                {slide.custom_link && <span>• Link: {slide.custom_link}</span>}
-                                {slide.slide_type === "product" && slide.products?.slug && (
-                                  <span>• Link: /product/{slide.products.slug}</span>
+                                {slide.product_id && (
+                                  <span>
+                                    • Linked to:{" "}
+                                    {products.find((p) => p.id === slide.product_id)?.name || "Unknown Product"}
+                                  </span>
                                 )}
                               </div>
                             </div>
@@ -2077,12 +2027,12 @@ function AdminDashboard() {
               <DialogDescription>Update the hero slide details</DialogDescription>
             </DialogHeader>
             {editingHeroSlide && (
-              <div className="grid gap-6 py-4">
+              <div className="grid gap-4 py-4">
                 {/* Slide Type Selection */}
                 <div>
                   <Label>Slide Type</Label>
                   <Select
-                    value={editingHeroSlide.slide_type || "manual"}
+                    value={editingHeroSlide.slide_type}
                     onValueChange={(value: "manual" | "product") => {
                       setEditingHeroSlide({
                         ...editingHeroSlide,
@@ -2092,7 +2042,9 @@ function AdminDashboard() {
                     }}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a slide type" />
+                      <SelectValue
+                        placeholder={editingHeroSlide.slide_type === "manual" ? "Manual Slide" : "Product-Based Slide"}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="manual">Manual Slide</SelectItem>
@@ -2125,13 +2077,46 @@ function AdminDashboard() {
                   </div>
                 )}
 
-                {/* Title and Subtitle */}
+                {/* Product Link Selection for Manual Slides */}
+                {editingHeroSlide.slide_type === "manual" && (
+                  <div>
+                    <Label>Link to Product (Optional)</Label>
+                    <Select
+                      value={editingHeroSlide.product_id?.toString() || ""}
+                      onValueChange={(value) => {
+                        setEditingHeroSlide({
+                          ...editingHeroSlide,
+                          product_id: value ? Number(value) : null,
+                        })
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Choose a product to link to (optional)" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">No product link</SelectItem>
+                        {products
+                          .filter((p) => p.is_active)
+                          .map((product) => (
+                            <SelectItem key={product.id} value={product.id.toString()}>
+                              {product.name} - ${product.price}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                    <p className="text-sm text-gray-500 mt-1">
+                      When selected, clicking the hero image will take users to this product's detail page.
+                    </p>
+                  </div>
+                )}
+
+                {/* Manual Fields */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="edit-hero-title">Title *</Label>
                     <Input
                       id="edit-hero-title"
-                      value={editingHeroSlide.title || ""}
+                      value={editingHeroSlide.title}
                       onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, title: e.target.value })}
                       placeholder="e.g., COMPLETE SET"
                     />
@@ -2140,14 +2125,13 @@ function AdminDashboard() {
                     <Label htmlFor="edit-hero-subtitle">Subtitle *</Label>
                     <Input
                       id="edit-hero-subtitle"
-                      value={editingHeroSlide.subtitle || ""}
+                      value={editingHeroSlide.subtitle}
                       onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, subtitle: e.target.value })}
                       placeholder="e.g., $2 COMMEMORATIVE COIN COLLECTION"
                     />
                   </div>
                 </div>
 
-                {/* Price, Coins, and Years */}
                 <div className="grid grid-cols-3 gap-4">
                   <div>
                     <Label htmlFor="edit-hero-price">Price</Label>
@@ -2178,95 +2162,17 @@ function AdminDashboard() {
                   </div>
                 </div>
 
-                {/* Link Options for Manual Slides */}
-                {editingHeroSlide.slide_type === "manual" && (
-                  <div className="space-y-4 p-4 border rounded-lg bg-gray-50">
-                    <Label className="text-sm font-medium">Link Options</Label>
-                    <div className="space-y-3">
-                      <div>
-                        <Label className="text-sm">Link to Product (Recommended)</Label>
-                        <Select
-                          value={editingHeroSlide.product_id?.toString() || ""}
-                          onValueChange={(value) => {
-                            if (value) {
-                              const product = products.find((p) => p.id === Number(value))
-                              setEditingHeroSlide({
-                                ...editingHeroSlide,
-                                product_id: Number(value),
-                                custom_link: `/product/${product?.slug || value}`,
-                              })
-                            } else {
-                              setEditingHeroSlide({
-                                ...editingHeroSlide,
-                                product_id: null,
-                                custom_link: "",
-                              })
-                            }
-                          }}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a product to link to" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="">No product link</SelectItem>
-                            {products
-                              .filter((p) => p.is_active)
-                              .map((product) => (
-                                <SelectItem key={product.id} value={product.id.toString()}>
-                                  {product.name} - ${product.price}
-                                </SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="text-center text-sm text-gray-500">OR</div>
-                      <div>
-                        <Label htmlFor="edit-hero-custom-link" className="text-sm">
-                          Custom Link
-                        </Label>
-                        <Input
-                          id="edit-hero-custom-link"
-                          value={editingHeroSlide.custom_link || ""}
-                          onChange={(e) => {
-                            setEditingHeroSlide({
-                              ...editingHeroSlide,
-                              custom_link: e.target.value,
-                              product_id: e.target.value ? null : editingHeroSlide.product_id,
-                            })
-                          }}
-                          placeholder="e.g., /catalog, /about, https://external-link.com"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">
-                          Leave empty to link to catalog. Can be internal (/catalog) or external (https://...)
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Display Order and Active */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="edit-hero-order">Display Order</Label>
-                    <Input
-                      id="edit-hero-order"
-                      type="number"
-                      value={editingHeroSlide.display_order || 0}
-                      onChange={(e) =>
-                        setEditingHeroSlide({ ...editingHeroSlide, display_order: Number(e.target.value) || 0 })
-                      }
-                      min="1"
-                    />
-                  </div>
-                  <div className="flex items-center space-x-2 pt-6">
-                    <input
-                      type="checkbox"
-                      id="edit-hero-is_active"
-                      checked={editingHeroSlide.is_active ?? true}
-                      onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, is_active: e.target.checked })}
-                    />
-                    <Label htmlFor="edit-hero-is_active">Active</Label>
-                  </div>
+                <div>
+                  <Label htmlFor="edit-hero-order">Display Order</Label>
+                  <Input
+                    id="edit-hero-order"
+                    type="number"
+                    value={editingHeroSlide.display_order}
+                    onChange={(e) =>
+                      setEditingHeroSlide({ ...editingHeroSlide, display_order: Number(e.target.value) })
+                    }
+                    min="1"
+                  />
                 </div>
 
                 {/* Image Upload for Manual Slides */}
@@ -2293,7 +2199,7 @@ function AdminDashboard() {
                       {editingHeroSlide.image_url && (
                         <div className="relative w-32 h-20 border rounded overflow-hidden">
                           <NextImage
-                            src={editingHeroSlide.image_url}
+                            src={editingHeroSlide.image_url || "/placeholder.svg"}
                             alt="Hero preview"
                             fill
                             className="object-cover"
@@ -2309,10 +2215,25 @@ function AdminDashboard() {
                   <div>
                     <Label>Product Image Preview</Label>
                     <div className="relative w-32 h-20 border rounded overflow-hidden">
-                      <NextImage src={editingHeroSlide.image_url} alt="Product preview" fill className="object-cover" />
+                      <NextImage
+                        src={editingHeroSlide.image_url || "/placeholder.svg"}
+                        alt="Product preview"
+                        fill
+                        className="object-cover"
+                      />
                     </div>
                   </div>
                 )}
+
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="edit-hero-is_active"
+                    checked={editingHeroSlide.is_active}
+                    onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, is_active: e.target.checked })}
+                  />
+                  <Label htmlFor="edit-hero-is_active">Active</Label>
+                </div>
               </div>
             )}
             <DialogFooter>

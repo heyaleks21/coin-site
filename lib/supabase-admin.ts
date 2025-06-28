@@ -46,7 +46,6 @@ export interface HeroSlide {
   price: string | null
   coins: string | null
   years: string | null
-  custom_link: string | null
   is_active: boolean
   display_order: number
   slide_type: "manual" | "product"
@@ -195,7 +194,6 @@ export const getHeroSlides = async () => {
         year,
         stock_quantity,
         country,
-        slug,
         categories (
           name
         )
