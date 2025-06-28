@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className="bg-black text-white">
       {/* Main Footer Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 lg:px-8 xl:px-12 py-8 md:py-12 lg:py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {/* Company Info */}
           <div className="space-y-4">
@@ -186,7 +186,7 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-gray-800">
-        <div className="container mx-auto px-4 py-4 md:py-6">
+        <div className="container mx-auto px-4 lg:px-8 xl:px-12 py-4 md:py-6 lg:py-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-gray-400 text-sm text-center md:text-left">
               © 2024 Aussie Coins. All rights reserved.
