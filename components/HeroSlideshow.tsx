@@ -39,28 +39,6 @@ const slides = [
     years: "2022",
     singleImage: true,
   },
-  {
-    id: 4,
-    title: "COIN NOODLING",
-    subtitle: "SEARCH FOR TREASURES IN COIN ROLLS",
-    mainImage: "/images/coin-roll-noodling.svg",
-    secondaryImage: null,
-    price: "$45",
-    coins: "50 Coins",
-    years: "Mixed Years",
-    singleImage: true,
-  },
-  {
-    id: 5,
-    title: "LUCKY DIPS",
-    subtitle: "MYSTERY COIN COLLECTIONS",
-    mainImage: "/images/lucky-dips.svg",
-    secondaryImage: null,
-    price: "$85",
-    coins: "Random Selection",
-    years: "Various",
-    singleImage: true,
-  },
 ]
 
 export default function HeroSlideshow() {
