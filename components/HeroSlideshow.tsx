@@ -61,13 +61,13 @@ export default function HeroSlideshow() {
         // Add a small delay then trigger the initial load animation
         setTimeout(() => {
           setHasInitiallyLoaded(true)
-        }, 100)
+        }, 300)
       })
       .catch(() => {
         setImagesLoaded(true)
         setTimeout(() => {
           setHasInitiallyLoaded(true)
-        }, 100)
+        }, 300)
       })
   }, [slides])
 
@@ -139,7 +139,11 @@ export default function HeroSlideshow() {
   if (slides.length === 0) {
     return (
       <section className="relative w-full min-h-[calc(100vh-80px)] bg-black overflow-hidden flex items-center justify-center">
-        <div className="text-center text-white">
+        <div
+          className={`text-center text-white transition-all duration-700 ease-in-out ${
+            !hasInitiallyLoaded ? "opacity-0 transform translate-y-8" : "opacity-100 transform translate-y-0"
+          }`}
+        >
           <h1 className="text-4xl font-light mb-4">Welcome to Our Store</h1>
           <p className="text-gray-300 mb-8">Discover our amazing collection of coins</p>
           <Link href="/catalog">
@@ -158,7 +162,7 @@ export default function HeroSlideshow() {
   return (
     <section className="relative w-full min-h-[calc(100vh-80px)] bg-black overflow-hidden flex flex-col justify-end">
       {/* Main Content Area */}
-      <div className="relative z-10 flex-grow flex items-center justify-center px-4 md:px-8 pb-24 pt-12">
+      <div className="relative z-10 flex-grow flex items-center justify-center px-4 md:px-8 pb-6 md:pb-24 pt-12">
         {slideLink ? (
           <Link href={slideLink} className="w-full h-full flex items-center justify-center group cursor-pointer">
             <div className="w-full transition-transform duration-300 group-hover:scale-[1.02]">
@@ -295,8 +299,8 @@ export default function HeroSlideshow() {
       {/* Slide Indicators - Mobile: positioned independently, Desktop: positioned at bottom */}
       {slides.length > 1 && (
         <>
-          {/* Mobile Indicators - positioned below content */}
-          <div className="flex justify-center gap-3 pb-8 md:hidden relative z-30">
+          {/* Mobile Indicators - positioned above the bottom with proper spacing */}
+          <div className="flex justify-center gap-3 pb-4 pt-6 md:hidden relative z-30">
             {slides.map((_, index) => (
               <button
                 key={index}
@@ -309,7 +313,11 @@ export default function HeroSlideshow() {
           </div>
 
           {/* Desktop Indicators - positioned at bottom */}
-          <div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-30 hidden md:block">
+          <div
+            className={`absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-30 hidden md:block transition-all duration-700 ease-in-out ${
+              !hasInitiallyLoaded ? "opacity-0 transform translate-y-4" : "opacity-100 transform translate-y-0"
+            }`}
+          >
             <div className="flex items-center gap-4">
               <div className="flex gap-3">
                 {slides.map((_, index) => (
@@ -328,7 +336,11 @@ export default function HeroSlideshow() {
       )}
 
       {/* Shop Now Button - Desktop Only */}
-      <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-30 hidden md:block">
+      <div
+        className={`absolute bottom-4 md:bottom-8 right-4 md:right-8 z-30 hidden md:block transition-all duration-700 ease-in-out ${
+          !hasInitiallyLoaded ? "opacity-0 transform translate-y-4" : "opacity-100 transform translate-y-0"
+        }`}
+      >
         <Link href="/catalog">
           <Button className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-4 md:px-8 py-2 md:py-3 text-sm md:text-base rounded-full tracking-wide transition-all duration-300 hover:scale-105">
             SHOP NOW
