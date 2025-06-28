@@ -180,48 +180,25 @@ export default function AboutPage() {
             ))}
           </div>
         </section>
-
-        {/* Call to Action Section */}
-        <section className="text-center bg-amber-600 text-white py-16 rounded-lg shadow-xl mb-16">
-          <h2 className="text-4xl font-bold mb-4">Ready to Explore Your Collection?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Whether you're looking to buy, sell, or simply learn more about your coins, our team is here to assist you.
-          </p>
-          <div className="flex justify-center space-x-4">
-            <Link href="/contact">
-              <Button variant="secondary" className="text-amber-600 hover:bg-amber-50">
-                Contact Us
-              </Button>
-            </Link>
-            <Link href="/catalog">
-              <Button
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-amber-600 bg-transparent"
-              >
-                View Catalog
-              </Button>
-            </Link>
-          </div>
-        </section>
-
-        {/* TikTok CTA */}
-        <section className="py-16 px-4 bg-gradient-to-r from-slate-800 to-purple-800 rounded-lg">
-          <div className="container mx-auto text-center">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse"></div>
-              <span className="text-white font-bold">LIVE NOW</span>
-            </div>
-            <h2 className="text-3xl font-bold text-white mb-4">Watch Live Coin Roll Noodling</h2>
-            <p className="text-gray-300 mb-8 text-lg">Join thousands watching live coin discoveries on TikTok</p>
-            <Link href="https://www.tiktok.com/@aussiecoins" target="_blank" rel="noopener noreferrer">
-              <Button className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 text-lg flex items-center gap-2 mx-auto">
-                <Play className="w-5 h-5" />
-                Watch Live on TikTok
-              </Button>
-            </Link>
-          </div>
-        </section>
       </div>
+
+      {/* TikTok CTA - Full Width */}
+      <section className="py-16 px-4 bg-gradient-to-r from-slate-800 to-purple-800">
+        <div className="container mx-auto text-center">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse"></div>
+            <span className="text-white font-bold">LIVE NOW</span>
+          </div>
+          <h2 className="text-3xl font-bold text-white mb-4">Watch Live Coin Roll Noodling</h2>
+          <p className="text-gray-300 mb-8 text-lg">Join thousands watching live coin discoveries on TikTok</p>
+          <Link href="https://www.tiktok.com/@aussiecoins" target="_blank" rel="noopener noreferrer">
+            <Button className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 text-lg flex items-center gap-2 mx-auto">
+              <Play className="w-5 h-5" />
+              Watch Live on TikTok
+            </Button>
+          </Link>
+        </div>
+      </section>
     </div>
   )
 }
