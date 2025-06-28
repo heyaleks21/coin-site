@@ -234,14 +234,18 @@ export default function ConsultationPage() {
                   />
                   <CardTitle className="text-xl">{expert.name}</CardTitle>
                   <CardDescription className="text-amber-600 font-semibold">{expert.title}</CardDescription>
-                  <Badge variant="secondary">{expert.experience}</Badge>
+                  <div className="flex justify-center">
+                    <Badge variant="secondary" className="w-fit">
+                      {expert.experience}
+                    </Badge>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
                     <h4 className="font-semibold text-sm">Specialties:</h4>
                     <div className="flex flex-wrap gap-1 justify-center">
                       {expert.specialties.map((specialty, idx) => (
-                        <Badge key={idx} variant="outline" className="text-xs">
+                        <Badge key={idx} variant="outline" className="text-xs w-fit">
                           {specialty}
                         </Badge>
                       ))}
@@ -266,7 +270,7 @@ export default function ConsultationPage() {
                 className={`relative ${option.popular ? "ring-2 ring-amber-500 shadow-xl" : "hover:shadow-lg"} transition-all`}
               >
                 {option.popular && (
-                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-amber-600 hover:bg-amber-700">
+                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-amber-600 hover:bg-amber-700 w-fit">
                     Most Popular
                   </Badge>
                 )}
@@ -274,7 +278,11 @@ export default function ConsultationPage() {
                   <CardTitle className="text-xl">{option.name}</CardTitle>
                   <div className="text-3xl font-bold text-amber-600">{option.price}</div>
                   <CardDescription>{option.description}</CardDescription>
-                  <Badge variant="outline">{option.duration}</Badge>
+                  <div className="flex justify-center">
+                    <Badge variant="outline" className="w-fit">
+                      {option.duration}
+                    </Badge>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-3">
@@ -539,8 +547,6 @@ export default function ConsultationPage() {
             </Card>
           </section>
         </div>
-
-        {/* TikTok CTA */}
       </div>
 
       {/* TikTok CTA */}
