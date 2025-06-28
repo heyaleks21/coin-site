@@ -290,12 +290,8 @@ export default function HeroSlideshow() {
             </div>
           </div>
         )}
-      </div>
-
-      {/* Slide Indicators - Mobile: positioned independently, Desktop: positioned at bottom */}
-      {slides.length > 1 && (
-        <>
-          {/* Mobile Indicators - positioned below content */}
+        {/* Slide Indicators - Mobile: positioned independently, Desktop: positioned at bottom */}
+        {slides.length > 1 && (
           <div className="flex justify-center gap-3 pb-8 md:hidden relative z-30">
             {slides.map((_, index) => (
               <button
@@ -307,24 +303,26 @@ export default function HeroSlideshow() {
               />
             ))}
           </div>
+        )}
+      </div>
 
-          {/* Desktop Indicators - positioned at bottom */}
-          <div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-30 hidden md:block">
-            <div className="flex items-center gap-4">
-              <div className="flex gap-3">
-                {slides.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => goToSlide(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentSlide ? "bg-amber-500 scale-125" : "bg-white/30 hover:bg-white/50"
-                    }`}
-                  />
-                ))}
-              </div>
+      {/* Desktop Indicators - positioned at bottom */}
+      {slides.length > 1 && (
+        <div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-30 hidden md:block">
+          <div className="flex items-center gap-4">
+            <div className="flex gap-3">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentSlide ? "bg-amber-500 scale-125" : "bg-white/30 hover:bg-white/50"
+                  }`}
+                />
+              ))}
             </div>
           </div>
-        </>
+        </div>
       )}
 
       {/* Shop Now Button - Desktop Only */}
