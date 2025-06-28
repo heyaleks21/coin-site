@@ -283,6 +283,7 @@ function AdminDashboard() {
     price: "",
     coins: "",
     years: "",
+    custom_link: "",
     is_active: true,
     display_order: 0,
     slide_type: "manual",
@@ -743,6 +744,8 @@ function AdminDashboard() {
 
       await createHeroSlide(heroSlideData)
       await loadData()
+
+      // Reset the form after successful creation
       setNewHeroSlide({
         title: "",
         subtitle: "",
@@ -750,11 +753,13 @@ function AdminDashboard() {
         price: "",
         coins: "",
         years: "",
+        custom_link: "",
         is_active: true,
         display_order: 0,
         slide_type: "manual",
         product_id: null,
       })
+
       setIsAddHeroDialogOpen(false)
       toast({
         title: "Success",
@@ -1572,6 +1577,23 @@ function AdminDashboard() {
                           </div>
                         </div>
 
+                        {/* Custom Link for Manual Slides */}
+                        {newHeroSlide.slide_type === "manual" && (
+                          <div className="col-span-3">
+                            <Label htmlFor="hero-custom-link">Custom Link (Optional)</Label>
+                            <Input
+                              id="hero-custom-link"
+                              value={newHeroSlide.custom_link || ""}
+                              onChange={(e) => setNewHeroSlide({ ...newHeroSlide, custom_link: e.target.value })}
+                              placeholder="e.g., /catalog, /product/special-coin, https://external-link.com"
+                            />
+                            <p className="text-xs text-gray-500 mt-1">
+                              Leave empty to use default catalog link. Can be internal (/catalog) or external
+                              (https://...)
+                            </p>
+                          </div>
+                        )}
+
                         {/* Image Upload for Manual Slides */}
                         {newHeroSlide.slide_type === "manual" && (
                           <div>
@@ -1671,6 +1693,10 @@ function AdminDashboard() {
                                 {slide.price && <span>{slide.price}</span>}
                                 {slide.coins && <span>• {slide.coins}</span>}
                                 {slide.years && <span>• {slide.years}</span>}
+                                {slide.custom_link && <span>• Link: {slide.custom_link}</span>}
+                                {slide.slide_type === "product" && slide.products?.slug && (
+                                  <span>• Link: /product/{slide.products.slug}</span>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -2087,6 +2113,22 @@ function AdminDashboard() {
                     />
                   </div>
                 </div>
+
+                {/* Custom Link for Manual Slides */}
+                {editingHeroSlide.slide_type === "manual" && (
+                  <div className="col-span-3">
+                    <Label htmlFor="edit-hero-custom-link">Custom Link (Optional)</Label>
+                    <Input
+                      id="edit-hero-custom-link"
+                      value={editingHeroSlide.custom_link || ""}
+                      onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, custom_link: e.target.value })}
+                      placeholder="e.g., /catalog, /product/special-coin, https://external-link.com"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Leave empty to use default catalog link. Can be internal (/catalog) or external (https://...)
+                    </p>
+                  </div>
+                )}
 
                 <div>
                   <Label htmlFor="edit-hero-order">Display Order</Label>
