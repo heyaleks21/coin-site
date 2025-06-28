@@ -30,10 +30,6 @@ export default function CheckoutPage() {
     lastName: "",
     email: "",
     phone: "",
-    address: "",
-    city: "",
-    state: "",
-    postcode: "",
     notes: "",
   })
 
@@ -377,55 +373,16 @@ export default function CheckoutPage() {
                     </div>
 
                     <div>
-                      <Label htmlFor="address" className="text-sm font-medium text-gray-700">
-                        Address *
+                      <Label htmlFor="notes" className="text-sm font-medium text-gray-700">
+                        Order Notes (Optional)
                       </Label>
-                      <Input
-                        id="address"
-                        required
-                        value={customerInfo.address}
-                        onChange={(e) => handleInputChange("address", e.target.value)}
-                        className="mt-1"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="city" className="text-sm font-medium text-gray-700">
-                          City *
-                        </Label>
-                        <Input
-                          id="city"
-                          required
-                          value={customerInfo.city}
-                          onChange={(e) => handleInputChange("city", e.target.value)}
-                          className="mt-1"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="state" className="text-sm font-medium text-gray-700">
-                          State *
-                        </Label>
-                        <Input
-                          id="state"
-                          required
-                          value={customerInfo.state}
-                          onChange={(e) => handleInputChange("state", e.target.value)}
-                          className="mt-1"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="postcode" className="text-sm font-medium text-gray-700">
-                        Postcode *
-                      </Label>
-                      <Input
-                        id="postcode"
-                        required
-                        value={customerInfo.postcode}
-                        onChange={(e) => handleInputChange("postcode", e.target.value)}
-                        className="mt-1"
+                      <textarea
+                        id="notes"
+                        value={customerInfo.notes}
+                        onChange={(e) => handleInputChange("notes", e.target.value)}
+                        placeholder="Any special instructions or notes for your order..."
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 resize-vertical min-h-[80px]"
+                        rows={3}
                       />
                     </div>
 
@@ -433,15 +390,7 @@ export default function CheckoutPage() {
                       <Button
                         onClick={() => handleStepComplete("contact")}
                         className="w-full bg-amber-600 hover:bg-amber-700"
-                        disabled={
-                          !customerInfo.firstName ||
-                          !customerInfo.lastName ||
-                          !customerInfo.email ||
-                          !customerInfo.address ||
-                          !customerInfo.city ||
-                          !customerInfo.state ||
-                          !customerInfo.postcode
-                        }
+                        disabled={!customerInfo.firstName || !customerInfo.lastName || !customerInfo.email}
                       >
                         Continue to Payment
                       </Button>
@@ -467,7 +416,8 @@ export default function CheckoutPage() {
                     <div className="mb-6">
                       <h3 className="text-lg font-semibold mb-2">Secure Payment with Stripe</h3>
                       <p className="text-gray-600 mb-4">
-                        You'll be redirected to Stripe's secure checkout to complete your payment.
+                        You'll be redirected to Stripe's secure checkout to complete your payment and provide shipping
+                        details.
                       </p>
                     </div>
                     <Button
