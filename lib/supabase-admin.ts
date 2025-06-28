@@ -38,6 +38,23 @@ export interface Product {
   categories?: Category
 }
 
+export interface HeroSlide {
+  id: number
+  title: string
+  subtitle: string
+  image_url: string | null
+  price: string | null
+  coins: string | null
+  years: string | null
+  is_active: boolean
+  display_order: number
+  slide_type: "manual" | "product"
+  product_id: number | null
+  created_at: string
+  updated_at: string
+  products?: Product
+}
+
 // Category functions
 export const getCategories = async () => {
   const { data, error } = await supabase.from("categories").select("*").order("name")
@@ -159,6 +176,140 @@ export const deleteProduct = async (id: number) => {
     }
   } catch (error) {
     console.error("Error in deleteProduct:", error)
+    throw error
+  }
+}
+
+// Hero Slide functions
+export const getHeroSlides = async () => {
+  const { data, error } = await supabase
+    .from("hero_slides")
+    .select(`
+      *,
+      products (
+        id,
+        name,
+        price,
+        primary_image_url,
+        year,
+        stock_quantity,
+        country,
+        categories (
+          name
+        )
+      )
+    `)
+    .order("display_order")
+
+  if (error) throw error
+  return data as HeroSlide[]
+}
+
+export const createHeroSlide = async (heroSlide: Omit<HeroSlide, "id" | "created_at" | "updated_at" | "products">) => {
+  const { data, error } = await supabase.from("hero_slides").insert([heroSlide]).select("*").single()
+  if (error) throw error
+  return data as HeroSlide
+}
+
+export const updateHeroSlide = async (id: number, updates: Partial<HeroSlide>) => {
+  const { data, error } = await supabase.from("hero_slides").update(updates).eq("id", id).select("*").single()
+  if (error) throw error
+  return data as HeroSlide
+}
+
+export const deleteHeroSlide = async (id: number) => {
+  try {
+    // First, get the hero slide to access its image
+    const { data: heroSlide, error: fetchError } = await supabase
+      .from("hero_slides")
+      .select("image_url, slide_type")
+      .eq("id", id)
+      .single()
+
+    if (fetchError) {
+      console.error("Error fetching hero slide for deletion:", fetchError)
+      throw fetchError
+    }
+
+    // Delete the hero slide from database first
+    const { error: deleteError } = await supabase.from("hero_slides").delete().eq("id", id)
+    if (deleteError) throw deleteError
+
+    // Delete associated image from storage if it's a manual slide and has a custom uploaded image
+    if (heroSlide.slide_type === "manual" && heroSlide.image_url && heroSlide.image_url.includes("hero-images")) {
+      try {
+        const filePath = getFilePathFromUrl(heroSlide.image_url)
+        const { error: storageError } = await supabase.storage.from("hero-images").remove([filePath])
+
+        if (storageError) {
+          console.error("Error deleting hero image from storage:", storageError)
+        } else {
+          console.log(`Deleted hero image from storage: ${filePath}`)
+        }
+      } catch (error) {
+        console.error("Error processing hero image deletion:", error)
+      }
+    }
+  } catch (error) {
+    console.error("Error in deleteHeroSlide:", error)
+    throw error
+  }
+}
+
+export const reorderHeroSlides = async (slideIds: number[]) => {
+  try {
+    const updates = slideIds.map((id, index) => ({
+      id,
+      display_order: index + 1,
+    }))
+
+    for (const update of updates) {
+      await supabase.from("hero_slides").update({ display_order: update.display_order }).eq("id", update.id)
+    }
+  } catch (error) {
+    console.error("Error reordering hero slides:", error)
+    throw error
+  }
+}
+
+// Image upload function for hero slides
+export const uploadHeroImage = async (file: File) => {
+  try {
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      throw new Error("Please select a valid image file")
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      throw new Error("Image size must be less than 5MB")
+    }
+
+    const fileExt = file.name.split(".").pop()?.toLowerCase()
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
+    const filePath = `hero-images/${fileName}`
+
+    console.log("Uploading hero image:", filePath)
+
+    const { data: uploadData, error: uploadError } = await supabase.storage.from("hero-images").upload(filePath, file, {
+      cacheControl: "3600",
+      upsert: false,
+    })
+
+    if (uploadError) {
+      console.error("Upload error:", uploadError)
+      throw new Error(`Upload failed: ${uploadError.message}`)
+    }
+
+    console.log("Upload successful:", uploadData)
+
+    const { data: urlData } = supabase.storage.from("hero-images").getPublicUrl(filePath)
+
+    console.log("Public URL:", urlData.publicUrl)
+
+    return urlData.publicUrl
+  } catch (error) {
+    console.error("Hero image upload error:", error)
     throw error
   }
 }

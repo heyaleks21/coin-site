@@ -4,58 +4,54 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-
-const slides = [
-  {
-    id: 1,
-    title: "COMPLETE SET",
-    subtitle: "$2 COMMEMORATIVE COIN COLLECTION",
-    mainImage: "/images/complete-2dollar-collection.svg",
-    secondaryImage: null,
-    price: "$1,850",
-    coins: "57 Coins",
-    years: "1988-2025",
-    singleImage: true,
-  },
-  {
-    id: 2,
-    title: "LIMITED SERIES",
-    subtitle: "35TH ANNIVERSARY OF THE $2 COIN",
-    mainImage: "/images/35th-anniversary-14-coin-set.svg",
-    secondaryImage: null,
-    price: "$395",
-    coins: "14 Coins",
-    years: "2023",
-    singleImage: true,
-  },
-  {
-    id: 3,
-    title: "RED POPPY",
-    subtitle: "REMEMBRANCE DAY C MINTMARK",
-    mainImage: "/images/2022-remembrance-day-red-poppy.svg",
-    secondaryImage: null,
-    price: "$125",
-    coins: "1 Coin",
-    years: "2022",
-    singleImage: true,
-  },
-]
+import { getHeroSlides, type HeroSlide } from "@/lib/supabase-admin"
 
 export default function HeroSlideshow() {
+  const [slides, setSlides] = useState<HeroSlide[]>([])
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [imagesLoaded, setImagesLoaded] = useState(false)
   const [hasInitiallyLoaded, setHasInitiallyLoaded] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  // Load slides from database
+  useEffect(() => {
+    const loadSlides = async () => {
+      try {
+        const heroSlides = await getHeroSlides()
+        const activeSlides = heroSlides.filter((slide) => slide.is_active)
+        setSlides(activeSlides)
+      } catch (error) {
+        console.error("Error loading hero slides:", error)
+        // Fallback to empty array if there's an error
+        setSlides([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadSlides()
+  }, [])
 
   // Preload all images to prevent flash
   useEffect(() => {
+    if (slides.length === 0) {
+      setImagesLoaded(true)
+      setHasInitiallyLoaded(true)
+      return
+    }
+
     const imagePromises = slides.map((slide) => {
       return new Promise((resolve, reject) => {
+        if (!slide.image_url) {
+          resolve(null)
+          return
+        }
         const img = new window.Image()
         img.onload = resolve
         img.onerror = reject
-        img.src = slide.mainImage
+        img.src = slide.image_url
       })
     })
 
@@ -73,10 +69,10 @@ export default function HeroSlideshow() {
           setHasInitiallyLoaded(true)
         }, 100)
       })
-  }, [])
+  }, [slides])
 
   useEffect(() => {
-    if (!isAutoPlaying || !imagesLoaded) return
+    if (!isAutoPlaying || !imagesLoaded || slides.length <= 1) return
 
     const interval = setInterval(() => {
       setIsTransitioning(true)
@@ -84,13 +80,13 @@ export default function HeroSlideshow() {
         setCurrentSlide((prev) => (prev + 1) % slides.length)
         setIsTransitioning(false)
       }, 300)
-    }, 4000) // Changed to 4 seconds
+    }, 4000)
 
     return () => clearInterval(interval)
-  }, [isAutoPlaying, imagesLoaded])
+  }, [isAutoPlaying, imagesLoaded, slides.length])
 
   const changeSlide = (newSlide: number) => {
-    if (newSlide === currentSlide) return
+    if (newSlide === currentSlide || slides.length === 0) return
 
     setIsTransitioning(true)
     setTimeout(() => {
@@ -107,10 +103,8 @@ export default function HeroSlideshow() {
     changeSlide(index)
   }
 
-  const currentSlideData = slides[currentSlide]
-
-  // Show loading state until images are preloaded
-  if (!imagesLoaded) {
+  // Show loading state until slides are loaded and images are preloaded
+  if (loading || !imagesLoaded) {
     return (
       <section className="relative w-full min-h-[calc(100vh-80px)] bg-black overflow-hidden flex items-center justify-center">
         <div className="flex items-center space-x-2">
@@ -121,6 +115,25 @@ export default function HeroSlideshow() {
       </section>
     )
   }
+
+  // Show fallback if no slides are available
+  if (slides.length === 0) {
+    return (
+      <section className="relative w-full min-h-[calc(100vh-80px)] bg-black overflow-hidden flex items-center justify-center">
+        <div className="text-center text-white">
+          <h1 className="text-4xl font-light mb-4">Welcome to Our Store</h1>
+          <p className="text-gray-300 mb-8">Discover our amazing collection of coins</p>
+          <Link href="/catalog">
+            <Button className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-8 py-3 rounded-full">
+              SHOP NOW
+            </Button>
+          </Link>
+        </div>
+      </section>
+    )
+  }
+
+  const currentSlideData = slides[currentSlide]
 
   return (
     <section className="relative w-full min-h-[calc(100vh-80px)] bg-black overflow-hidden flex flex-col justify-end">
@@ -152,11 +165,11 @@ export default function HeroSlideshow() {
 
             {/* Collection Info */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 md:gap-8 text-sm sm:text-base md:text-sm lg:text-base text-gray-400 font-light tracking-wide">
-              <span>{currentSlideData.coins}</span>
-              <span>•</span>
-              <span>{currentSlideData.years}</span>
-              <span>•</span>
-              <span className="text-amber-500 font-medium">{currentSlideData.price}</span>
+              {currentSlideData.coins && <span>{currentSlideData.coins}</span>}
+              {currentSlideData.coins && currentSlideData.years && <span>•</span>}
+              {currentSlideData.years && <span>{currentSlideData.years}</span>}
+              {(currentSlideData.coins || currentSlideData.years) && currentSlideData.price && <span>•</span>}
+              {currentSlideData.price && <span className="text-amber-500 font-medium">{currentSlideData.price}</span>}
             </div>
           </div>
 
@@ -176,7 +189,7 @@ export default function HeroSlideshow() {
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-400/10 to-amber-600/10 blur-xl md:blur-3xl md:from-amber-400/20 md:to-amber-600/20 rounded-2xl will-change-transform"></div>
                 <Image
                   key={currentSlide} // Force re-render to prevent flash
-                  src={currentSlideData.mainImage || "/placeholder.svg"}
+                  src={currentSlideData.image_url || "/placeholder.svg?height=400&width=600&text=No+Image"}
                   alt={`${currentSlideData.title} Collection`}
                   width={600}
                   height={400}
@@ -188,36 +201,40 @@ export default function HeroSlideshow() {
           </div>
 
           {/* Slide Indicators - Mobile only, part of content */}
-          <div className="flex gap-3 mt-8 md:hidden">
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentSlide ? "bg-amber-500 scale-125" : "bg-white/30 hover:bg-white/50"
-                }`}
-              />
-            ))}
-          </div>
+          {slides.length > 1 && (
+            <div className="flex gap-3 mt-8 md:hidden">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentSlide ? "bg-amber-500 scale-125" : "bg-white/30 hover:bg-white/50"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Slide Indicators - Desktop only, positioned at bottom */}
-      <div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20 hidden md:block">
-        <div className="flex items-center gap-4">
-          <div className="flex gap-3">
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentSlide ? "bg-amber-500 scale-125" : "bg-white/30 hover:bg-white/50"
-                }`}
-              />
-            ))}
+      {slides.length > 1 && (
+        <div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20 hidden md:block">
+          <div className="flex items-center gap-4">
+            <div className="flex gap-3">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentSlide ? "bg-amber-500 scale-125" : "bg-white/30 hover:bg-white/50"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Shop Now Button - Desktop Only */}
       <div className="absolute bottom-4 md:bottom-8 right-4 md:right-8 z-20 hidden md:block">
