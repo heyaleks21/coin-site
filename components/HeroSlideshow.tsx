@@ -81,8 +81,10 @@ export default function HeroSlideshow() {
       setIsTransitioning(true)
       setTimeout(() => {
         setCurrentSlide((prev) => (prev + 1) % slides.length)
-        setIsTransitioning(false)
-      }, 300)
+        setTimeout(() => {
+          setIsTransitioning(false)
+        }, 50) // Small delay to ensure content updates before transition ends
+      }, 350) // Slightly longer to ensure smooth transition
     }, 4000)
 
     return () => clearInterval(interval)
@@ -94,8 +96,10 @@ export default function HeroSlideshow() {
     setIsTransitioning(true)
     setTimeout(() => {
       setCurrentSlide(newSlide)
-      setIsTransitioning(false)
-    }, 300)
+      setTimeout(() => {
+        setIsTransitioning(false)
+      }, 50) // Small delay to ensure content updates before transition ends
+    }, 350) // Slightly longer to ensure smooth transition
     setIsAutoPlaying(false)
 
     // Resume auto-play after 10 seconds
@@ -158,6 +162,37 @@ export default function HeroSlideshow() {
   const currentSlideData = slides[currentSlide]
   const slideLink = getCurrentSlideLink()
 
+  // Create a unified transition class for both text and image
+  const getTransitionClass = () => {
+    if (!hasInitiallyLoaded) {
+      return "opacity-0"
+    }
+    if (isTransitioning) {
+      return "opacity-0"
+    }
+    return "opacity-100"
+  }
+
+  const getTextTransform = () => {
+    if (!hasInitiallyLoaded) {
+      return "transform translate-y-8 lg:translate-y-0 lg:translate-x-[-40px]"
+    }
+    if (isTransitioning) {
+      return "transform translate-y-4 lg:translate-y-0 lg:translate-x-[-20px]"
+    }
+    return "transform translate-y-0 lg:translate-x-0"
+  }
+
+  const getImageTransform = () => {
+    if (!hasInitiallyLoaded) {
+      return "transform translate-y-8 lg:translate-y-0 lg:translate-x-[40px] scale-90"
+    }
+    if (isTransitioning) {
+      return "transform translate-y-4 lg:translate-y-0 lg:translate-x-[20px] scale-95"
+    }
+    return "transform translate-y-0 lg:translate-x-0 scale-100"
+  }
+
   return (
     <section className="relative w-full min-h-[calc(100vh-80px)] bg-black overflow-hidden flex flex-col justify-end">
       {/* Main Content Area */}
@@ -165,13 +200,7 @@ export default function HeroSlideshow() {
         <div className="container mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16">
           {/* Left Content - Typography */}
           <div
-            className={`text-white text-center lg:text-left space-y-4 md:space-y-6 transition-all duration-700 ease-in-out ${
-              !hasInitiallyLoaded
-                ? "opacity-0 transform translate-y-8 lg:translate-y-0 lg:translate-x-[-40px]"
-                : isTransitioning
-                  ? "opacity-0 transform translate-y-4 lg:translate-y-0 lg:translate-x-[-20px]"
-                  : "opacity-100 transform translate-y-0 lg:translate-x-0"
-            }`}
+            className={`text-white text-center lg:text-left space-y-4 md:space-y-6 transition-all duration-700 ease-in-out ${getTransitionClass()} ${getTextTransform()}`}
           >
             <div className="space-y-2 md:space-y-4">
               <h1 className="text-4xl sm:text-5xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-light tracking-wider leading-tight">
@@ -200,13 +229,7 @@ export default function HeroSlideshow() {
           <div className="relative flex items-center justify-center w-full lg:w-auto">
             <div className="relative w-full max-w-md sm:max-w-lg md:max-w-md lg:max-w-lg xl:max-w-xl">
               <div
-                className={`relative w-full h-auto aspect-[3/2] mx-auto flex items-center justify-center transition-all duration-700 ease-in-out ${
-                  !hasInitiallyLoaded
-                    ? "opacity-0 transform translate-y-8 lg:translate-y-0 lg:translate-x-[40px] scale-90"
-                    : isTransitioning
-                      ? "opacity-0 transform translate-y-4 lg:translate-y-0 lg:translate-x-[20px] scale-95"
-                      : "opacity-100 transform translate-y-0 lg:translate-x-0 scale-100"
-                }`}
+                className={`relative w-full h-auto aspect-[3/2] mx-auto flex items-center justify-center transition-all duration-700 ease-in-out ${getTransitionClass()} ${getImageTransform()}`}
               >
                 {/* Mobile-optimized glow - reduced blur and opacity */}
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-400/10 to-amber-600/10 blur-xl md:blur-3xl md:from-amber-400/20 md:to-amber-600/20 rounded-2xl will-change-transform"></div>
@@ -216,25 +239,27 @@ export default function HeroSlideshow() {
                   <Link href={slideLink} className="block w-full h-full group cursor-pointer">
                     <div className="w-full h-full transition-transform duration-300 group-hover:scale-[1.02]">
                       <Image
-                        key={currentSlide} // Force re-render to prevent flash
+                        key={`${currentSlide}-${currentSlideData.id}`} // More unique key to force re-render
                         src={currentSlideData.image_url || "/placeholder.svg?height=400&width=600&text=No+Image"}
                         alt={`${currentSlideData.title} Collection`}
                         width={600}
                         height={400}
                         className="object-contain drop-shadow-2xl max-h-full w-full h-full"
                         priority
+                        loading="eager"
                       />
                     </div>
                   </Link>
                 ) : (
                   <Image
-                    key={currentSlide} // Force re-render to prevent flash
+                    key={`${currentSlide}-${currentSlideData.id}`} // More unique key to force re-render
                     src={currentSlideData.image_url || "/placeholder.svg?height=400&width=600&text=No+Image"}
                     alt={`${currentSlideData.title} Collection`}
                     width={600}
                     height={400}
                     className="object-contain drop-shadow-2xl max-h-full w-full h-full"
                     priority
+                    loading="eager"
                   />
                 )}
               </div>
