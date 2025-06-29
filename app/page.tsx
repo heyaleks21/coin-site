@@ -80,57 +80,59 @@ export default function HomePage() {
       {/* Hero Slideshow */}
       <HeroSlideshow />
 
-      {/* Compact Live Stream Section */}
-      <section className="py-6 px-4 bg-gradient-to-r from-slate-800 to-purple-800">
+      {/* Enhanced Services & Giveaways Section */}
+      <section className="py-8 px-4 bg-gradient-to-br from-slate-800 via-purple-800 to-indigo-900">
         <div className="container mx-auto">
-          <div className="grid md:grid-cols-3 gap-6 items-center max-w-4xl mx-auto">
-            {/* Live Stream Info */}
-            <div className="text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-2 mb-3">
-                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-                <span className="text-white font-bold text-sm">LIVE</span>
-                <Users className="w-4 h-4 text-white" />
-                <span className="text-white text-sm">1,247</span>
-              </div>
-              <h2 className="text-2xl font-bold text-white mb-2">
-                <Link
-                  href="https://www.tiktok.com/@aussiecoins"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:no-underline"
-                >
-                  Live TikTok Stream
-                </Link>
-              </h2>
-              <p className="text-gray-300 text-sm mb-4">Watch live coin discoveries</p>
-              <div className="flex justify-center md:justify-start">
-                <Link href="https://www.tiktok.com/@aussiecoins" target="_blank" rel="noopener noreferrer">
-                  <Button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm flex items-center gap-2">
-                    <Play className="w-4 h-4" />
-                    Watch Now
-                  </Button>
-                </Link>
-              </div>
+          {/* Live Stream Header */}
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+              <span className="text-white font-bold text-sm">LIVE</span>
+              <Users className="w-4 h-4 text-white" />
+              <span className="text-white text-sm">1,247</span>
             </div>
+            <h2 className="text-3xl font-bold text-white mb-2">
+              <Link
+                href="https://www.tiktok.com/@aussiecoins"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:no-underline"
+              >
+                Live TikTok Stream
+              </Link>
+            </h2>
+            <p className="text-gray-300 mb-4">Watch live coin discoveries & participate in giveaways</p>
+            <Link href="https://www.tiktok.com/@aussiecoins" target="_blank" rel="noopener noreferrer">
+              <Button className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full flex items-center gap-2 mx-auto">
+                <Play className="w-5 h-5" />
+                Watch Live Now
+              </Button>
+            </Link>
+          </div>
 
+          {/* Services Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {/* Coin Roll Noodling */}
-            <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <Image
-                    src="/images/coin-roll.svg"
-                    alt="Coin Roll"
-                    width={40}
-                    height={40}
-                    className="object-contain"
-                  />
+            <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/15 transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-amber-500/20 rounded-full flex items-center justify-center">
+                    <Image
+                      src="/images/coin-roll.svg"
+                      alt="Coin Roll"
+                      width={24}
+                      height={24}
+                      className="object-contain"
+                    />
+                  </div>
                   <div>
-                    <h3 className="font-bold text-white">Coin Roll Noodling</h3>
-                    <p className="text-xs text-gray-300">From $5</p>
+                    <h3 className="font-bold text-white text-lg">Coin Roll Noodling</h3>
+                    <p className="text-xs text-gray-300">Starting from $5</p>
                   </div>
                 </div>
+                <p className="text-sm text-gray-300 mb-4">Sponsor a coin roll and watch it get opened live on stream</p>
                 <Button
-                  className="w-full bg-amber-500 hover:bg-amber-600 text-white py-2 text-sm"
+                  className="w-full bg-amber-500 hover:bg-amber-600 text-white py-2.5 font-semibold"
                   onClick={handleSponsorRollClick}
                 >
                   Sponsor Roll
@@ -139,29 +141,100 @@ export default function HomePage() {
             </Card>
 
             {/* Lucky Dips */}
-            <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <Image
-                    src="/images/red-poppy.jpg"
-                    alt="Lucky Dip"
-                    width={40}
-                    height={40}
-                    className="object-contain rounded-full"
-                  />
+            <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/15 transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center">
+                    <Image
+                      src="/images/red-poppy.jpg"
+                      alt="Lucky Dip"
+                      width={24}
+                      height={24}
+                      className="object-contain rounded-full"
+                    />
+                  </div>
                   <div>
-                    <h3 className="font-bold text-white">Lucky Dips</h3>
-                    <p className="text-xs text-gray-300">From $10</p>
+                    <h3 className="font-bold text-white text-lg">Lucky Dips</h3>
+                    <p className="text-xs text-gray-300">Starting from $10</p>
                   </div>
                 </div>
+                <p className="text-sm text-gray-300 mb-4">
+                  Mystery coin packages with guaranteed value and potential treasures
+                </p>
                 <Button
-                  className="w-full bg-red-500 hover:bg-red-600 text-white py-2 text-sm"
+                  className="w-full bg-red-500 hover:bg-red-600 text-white py-2.5 font-semibold"
                   onClick={handleLuckyDipClick}
                 >
                   Get Lucky Dip
                 </Button>
               </CardContent>
             </Card>
+
+            {/* Coin Giveaway Tickets */}
+            <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/15 transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center">
+                    <Award className="w-6 h-6 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-lg">Giveaway Tickets</h3>
+                    <p className="text-xs text-gray-300">$2 per ticket</p>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-300 mb-4">Enter weekly coin giveaways with rare and valuable prizes</p>
+                <Button
+                  className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2.5 font-semibold"
+                  onClick={() => router.push("/giveaways")}
+                >
+                  Buy Tickets
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* VIP Subscription */}
+            <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-sm border-purple-400/30 text-white hover:from-purple-500/25 hover:to-pink-500/25 transition-all duration-300 relative overflow-hidden">
+              <div className="absolute top-2 right-2">
+                <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+                  VIP
+                </span>
+              </div>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-full flex items-center justify-center">
+                    <Users className="w-6 h-6 text-purple-300" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-lg">VIP Club</h3>
+                    <p className="text-xs text-gray-300">$19.99/month</p>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-300 mb-4">
+                  Monthly lucky dip + exclusive giveaway entries + early access
+                </p>
+                <Button
+                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2.5 font-semibold"
+                  onClick={() => router.push("/vip-club")}
+                >
+                  Join VIP Club
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="text-center mt-8">
+            <p className="text-gray-300 text-sm mb-4">
+              🎁 New giveaways every week • 📦 Monthly VIP packages • 🏆 Exclusive member benefits
+            </p>
+            <div className="flex justify-center items-center">
+              <Button
+                className="bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm"
+                onClick={() => router.push("/catalog")}
+              >
+                View All Products
+              </Button>
+            </div>
           </div>
         </div>
       </section>

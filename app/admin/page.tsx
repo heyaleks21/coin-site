@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -23,6 +22,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Plus,
   Edit,
@@ -137,8 +137,8 @@ function ImageManager({ images, onImagesChange, isUploading, onUpload }: ImageMa
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <Label>Product Images</Label>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <Label className="text-sm font-medium">Product Images</Label>
         <div className="relative">
           <Input
             type="file"
@@ -148,7 +148,7 @@ function ImageManager({ images, onImagesChange, isUploading, onUpload }: ImageMa
             disabled={isUploading}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
           />
-          <Button size="sm" disabled={isUploading} className="bg-amber-600 hover:bg-amber-700">
+          <Button size="sm" disabled={isUploading} className="bg-amber-600 hover:bg-amber-700 w-full sm:w-auto">
             <Upload className="h-4 w-4 mr-2" />
             {isUploading ? "Uploading..." : "Add Images"}
           </Button>
@@ -156,7 +156,7 @@ function ImageManager({ images, onImagesChange, isUploading, onUpload }: ImageMa
       </div>
 
       {images.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {images.map((imageUrl, index) => (
             <div
               key={index}
@@ -193,7 +193,7 @@ function ImageManager({ images, onImagesChange, isUploading, onUpload }: ImageMa
               </div>
 
               {/* Move buttons for mobile */}
-              <div className="flex justify-between mt-2 md:hidden">
+              <div className="flex justify-between mt-2 sm:hidden">
                 <Button
                   size="sm"
                   variant="outline"
@@ -222,14 +222,14 @@ function ImageManager({ images, onImagesChange, isUploading, onUpload }: ImageMa
       )}
 
       {images.length === 0 && (
-        <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-          <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-500 mb-2">No images uploaded</p>
-          <p className="text-sm text-gray-400">Click "Add Images" to upload product photos</p>
+        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+          <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+          <p className="text-gray-500 text-sm mb-1">No images uploaded</p>
+          <p className="text-xs text-gray-400">Click "Add Images" to upload product photos</p>
         </div>
       )}
 
-      <p className="text-sm text-gray-500">
+      <p className="text-xs text-gray-500">
         The first image will be used as the primary image. Drag and drop to reorder images.
       </p>
     </div>
@@ -972,291 +972,307 @@ function AdminDashboard() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4 sm:py-8">
         {/* Welcome Message */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <Card className="bg-gradient-to-r from-amber-600 to-amber-700 text-white">
-            <CardContent className="py-6">
-              <h2 className="text-xl font-semibold mb-2">Welcome back, {user?.email}!</h2>
-              <p className="text-amber-100">Manage your inventory and track your business performance.</p>
+            <CardContent className="py-4 sm:py-6">
+              <h2 className="text-lg sm:text-xl font-semibold mb-2">Welcome back, {user?.email}!</h2>
+              <p className="text-amber-100 text-sm sm:text-base">
+                Manage your inventory and track your business performance.
+              </p>
             </CardContent>
           </Card>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Total Products</CardTitle>
+              <CardTitle className="text-xs sm:text-sm font-medium text-gray-600">Total Products</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{totalProducts}</div>
+              <div className="text-xl sm:text-2xl font-bold">{totalProducts}</div>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Total Value</CardTitle>
+              <CardTitle className="text-xs sm:text-sm font-medium text-gray-600">Total Value</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">${totalValue.toLocaleString()}</div>
+              <div className="text-xl sm:text-2xl font-bold">${totalValue.toLocaleString()}</div>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Low Stock Items</CardTitle>
+              <CardTitle className="text-xs sm:text-sm font-medium text-gray-600">Low Stock Items</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600">{lowStockItems}</div>
+              <div className="text-xl sm:text-2xl font-bold text-red-600">{lowStockItems}</div>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">Categories</CardTitle>
+              <CardTitle className="text-xs sm:text-sm font-medium text-gray-600">Categories</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{totalCategories}</div>
+              <div className="text-xl sm:text-2xl font-bold">{totalCategories}</div>
             </CardContent>
           </Card>
         </div>
 
         {/* Main Content */}
         <Tabs defaultValue="products" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="products" className="flex items-center gap-2">
-              <Package className="h-4 w-4" />
-              Products
-            </TabsTrigger>
-            <TabsTrigger value="categories" className="flex items-center gap-2">
-              <Tag className="h-4 w-4" />
-              Categories
-            </TabsTrigger>
-            <TabsTrigger value="hero-slides" className="flex items-center gap-2">
-              <ImageIcon className="h-4 w-4" />
-              Hero Slides
-            </TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto">
+            <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:grid-cols-none lg:inline-flex">
+              <TabsTrigger value="products" className="flex items-center gap-2 text-xs sm:text-sm">
+                <Package className="h-4 w-4" />
+                <span className="hidden sm:inline">Products</span>
+                <span className="sm:hidden">Items</span>
+              </TabsTrigger>
+              <TabsTrigger value="categories" className="flex items-center gap-2 text-xs sm:text-sm">
+                <Tag className="h-4 w-4" />
+                <span className="hidden sm:inline">Categories</span>
+                <span className="sm:hidden">Cats</span>
+              </TabsTrigger>
+              <TabsTrigger value="hero-slides" className="flex items-center gap-2 text-xs sm:text-sm">
+                <ImageIcon className="h-4 w-4" />
+                <span className="hidden sm:inline">Hero Slides</span>
+                <span className="sm:hidden">Slides</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Products Tab */}
           <TabsContent value="products">
             <Card>
               <CardHeader>
-                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                <div className="flex flex-col gap-4 items-start justify-between">
                   <div>
-                    <CardTitle>Product Management</CardTitle>
-                    <CardDescription>Add, edit, and manage your inventory</CardDescription>
+                    <CardTitle className="text-lg sm:text-xl">Product Management</CardTitle>
+                    <CardDescription className="text-sm">Add, edit, and manage your inventory</CardDescription>
                   </div>
                   <Dialog open={isAddProductDialogOpen} onOpenChange={setIsAddProductDialogOpen}>
                     <DialogTrigger asChild>
-                      <Button className="bg-amber-600 hover:bg-amber-700">
+                      <Button className="bg-amber-600 hover:bg-amber-700 w-full sm:w-auto">
                         <Plus className="h-4 w-4 mr-2" />
-                        Add New Product
+                        <span className="hidden sm:inline">Add New Product</span>
+                        <span className="sm:hidden">Add Product</span>
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <DialogContent className="w-[95vw] max-w-4xl max-h-[95vh] overflow-hidden">
                       <DialogHeader>
                         <DialogTitle>Add New Product</DialogTitle>
                         <DialogDescription>Enter the details for the new product</DialogDescription>
                       </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        {/* Basic Information */}
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <Label htmlFor="name">Product Name *</Label>
-                            <Input
-                              id="name"
-                              value={newProduct.name}
-                              onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                              placeholder="e.g., 1966 Round 50 Cent"
-                            />
+                      <ScrollArea className="max-h-[calc(95vh-120px)] pr-4">
+                        <div className="grid gap-4 py-4">
+                          {/* Basic Information */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <Label htmlFor="name">Product Name *</Label>
+                              <Input
+                                id="name"
+                                value={newProduct.name}
+                                onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+                                placeholder="e.g., 1966 Round 50 Cent"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="price">Price ($) *</Label>
+                              <Input
+                                id="price"
+                                type="number"
+                                step="0.01"
+                                value={newProduct.price}
+                                onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
+                                placeholder="0.00"
+                              />
+                            </div>
                           </div>
-                          <div>
-                            <Label htmlFor="price">Price ($) *</Label>
-                            <Input
-                              id="price"
-                              type="number"
-                              step="0.01"
-                              value={newProduct.price}
-                              onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) })}
-                              placeholder="0.00"
-                            />
-                          </div>
-                        </div>
 
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <Label htmlFor="category">Category *</Label>
-                            <Select
-                              value={newProduct.category_id?.toString()}
-                              onValueChange={(value) => setNewProduct({ ...newProduct, category_id: Number(value) })}
-                            >
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select category" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {categories.map((category) => (
-                                  <SelectItem key={category.id} value={category.id.toString()}>
-                                    {category.name}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <Label htmlFor="category">Category *</Label>
+                              <Select
+                                value={newProduct.category_id?.toString()}
+                                onValueChange={(value) => setNewProduct({ ...newProduct, category_id: Number(value) })}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select category" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {categories.map((category) => (
+                                    <SelectItem key={category.id} value={category.id.toString()}>
+                                      {category.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <Label htmlFor="stock">Stock Quantity</Label>
+                              <Input
+                                id="stock"
+                                type="number"
+                                value={newProduct.stock_quantity}
+                                onChange={(e) =>
+                                  setNewProduct({ ...newProduct, stock_quantity: Number(e.target.value) })
+                                }
+                                placeholder="0"
+                              />
+                            </div>
                           </div>
-                          <div>
-                            <Label htmlFor="stock">Stock Quantity</Label>
-                            <Input
-                              id="stock"
-                              type="number"
-                              value={newProduct.stock_quantity}
-                              onChange={(e) => setNewProduct({ ...newProduct, stock_quantity: Number(e.target.value) })}
-                              placeholder="0"
-                            />
-                          </div>
-                        </div>
 
-                        {/* Additional fields */}
-                        <div className="grid grid-cols-4 gap-4">
-                          <div>
-                            <Label htmlFor="year">Year</Label>
-                            <Input
-                              id="year"
-                              type="number"
-                              value={newProduct.year || ""}
-                              onChange={(e) =>
-                                setNewProduct({ ...newProduct, year: e.target.value ? Number(e.target.value) : null })
-                              }
-                            />
+                          {/* Additional fields */}
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            <div>
+                              <Label htmlFor="year">Year</Label>
+                              <Input
+                                id="year"
+                                type="number"
+                                value={newProduct.year || ""}
+                                onChange={(e) =>
+                                  setNewProduct({ ...newProduct, year: e.target.value ? Number(e.target.value) : null })
+                                }
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="condition">Condition</Label>
+                              <Select
+                                value={newProduct.condition || ""}
+                                onValueChange={(value) => setNewProduct({ ...newProduct, condition: value })}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {conditions.map((condition) => (
+                                    <SelectItem key={condition} value={condition}>
+                                      {condition}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <Label htmlFor="rarity">Rarity</Label>
+                              <Select
+                                value={newProduct.rarity || ""}
+                                onValueChange={(value) => setNewProduct({ ...newProduct, rarity: value })}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {rarities.map((rarity) => (
+                                    <SelectItem key={rarity} value={rarity}>
+                                      {rarity}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <Label htmlFor="country">Country</Label>
+                              <Input
+                                id="country"
+                                value={newProduct.country}
+                                onChange={(e) => setNewProduct({ ...newProduct, country: e.target.value })}
+                                placeholder="Australia"
+                              />
+                            </div>
                           </div>
-                          <div>
-                            <Label htmlFor="condition">Condition</Label>
-                            <Select
-                              value={newProduct.condition || ""}
-                              onValueChange={(value) => setNewProduct({ ...newProduct, condition: value })}
-                            >
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select condition" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {conditions.map((condition) => (
-                                  <SelectItem key={condition} value={condition}>
-                                    {condition}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          <div>
-                            <Label htmlFor="rarity">Rarity</Label>
-                            <Select
-                              value={newProduct.rarity || ""}
-                              onValueChange={(value) => setNewProduct({ ...newProduct, rarity: value })}
-                            >
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select rarity" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {rarities.map((rarity) => (
-                                  <SelectItem key={rarity} value={rarity}>
-                                    {rarity}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          <div>
-                            <Label htmlFor="country">Country</Label>
-                            <Input
-                              id="country"
-                              value={newProduct.country}
-                              onChange={(e) => setNewProduct({ ...newProduct, country: e.target.value })}
-                              placeholder="Australia"
-                            />
-                          </div>
-                        </div>
 
-                        {/* Additional fields for sets */}
-                        <div className="grid grid-cols-3 gap-4">
-                          <div>
-                            <Label htmlFor="set_size">Set Size</Label>
-                            <Input
-                              id="set_size"
-                              type="number"
-                              value={newProduct.set_size || ""}
-                              onChange={(e) =>
-                                setNewProduct({
-                                  ...newProduct,
-                                  set_size: e.target.value ? Number(e.target.value) : null,
-                                })
-                              }
-                              placeholder="Number of items in set"
-                            />
+                          {/* Additional fields for sets */}
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                              <Label htmlFor="set_size">Set Size</Label>
+                              <Input
+                                id="set_size"
+                                type="number"
+                                value={newProduct.set_size || ""}
+                                onChange={(e) =>
+                                  setNewProduct({
+                                    ...newProduct,
+                                    set_size: e.target.value ? Number(e.target.value) : null,
+                                  })
+                                }
+                                placeholder="Number of items"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="set_type">Set Type</Label>
+                              <Input
+                                id="set_type"
+                                value={newProduct.set_type || ""}
+                                onChange={(e) => setNewProduct({ ...newProduct, set_type: e.target.value })}
+                                placeholder="e.g., Commemorative"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="metal">Metal</Label>
+                              <Input
+                                id="metal"
+                                value={newProduct.metal || ""}
+                                onChange={(e) => setNewProduct({ ...newProduct, metal: e.target.value })}
+                                placeholder="e.g., Silver, Gold"
+                              />
+                            </div>
                           </div>
-                          <div>
-                            <Label htmlFor="set_type">Set Type</Label>
-                            <Input
-                              id="set_type"
-                              value={newProduct.set_type || ""}
-                              onChange={(e) => setNewProduct({ ...newProduct, set_type: e.target.value })}
-                              placeholder="e.g., Commemorative, Proof"
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="metal">Metal</Label>
-                            <Input
-                              id="metal"
-                              value={newProduct.metal || ""}
-                              onChange={(e) => setNewProduct({ ...newProduct, metal: e.target.value })}
-                              placeholder="e.g., Silver, Gold, Bronze"
-                            />
-                          </div>
-                        </div>
 
-                        <div>
-                          <Label htmlFor="description">Description</Label>
-                          <Textarea
-                            id="description"
-                            value={newProduct.description || ""}
-                            onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-                            placeholder="Enter product description..."
-                            rows={3}
+                          <div>
+                            <Label htmlFor="description">Description</Label>
+                            <Textarea
+                              id="description"
+                              value={newProduct.description || ""}
+                              onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+                              placeholder="Enter product description..."
+                              rows={3}
+                            />
+                          </div>
+
+                          {/* Image Manager */}
+                          <ImageManager
+                            images={[newProduct.primary_image_url, ...(newProduct.additional_images || [])].filter(
+                              Boolean,
+                            )}
+                            onImagesChange={(images) => handleImagesChange(images, false)}
+                            isUploading={uploadingImage}
+                            onUpload={(file) => handleImageUpload(file, false)}
                           />
-                        </div>
 
-                        {/* Image Manager */}
-                        <ImageManager
-                          images={[newProduct.primary_image_url, ...(newProduct.additional_images || [])].filter(
-                            Boolean,
-                          )}
-                          onImagesChange={(images) => handleImagesChange(images, false)}
-                          isUploading={uploadingImage}
-                          onUpload={(file) => handleImageUpload(file, false)}
-                        />
-
-                        <div className="flex items-center space-x-4">
-                          <div className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
-                              id="is_featured"
-                              checked={newProduct.is_featured}
-                              onChange={(e) => setNewProduct({ ...newProduct, is_featured: e.target.checked })}
-                            />
-                            <Label htmlFor="is_featured">Featured Product</Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
-                              id="is_active"
-                              checked={newProduct.is_active}
-                              onChange={(e) => setNewProduct({ ...newProduct, is_active: e.target.checked })}
-                            />
-                            <Label htmlFor="is_active">Active</Label>
+                          <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                            <div className="flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                id="is_featured"
+                                checked={newProduct.is_featured}
+                                onChange={(e) => setNewProduct({ ...newProduct, is_featured: e.target.checked })}
+                              />
+                              <Label htmlFor="is_featured">Featured Product</Label>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                id="is_active"
+                                checked={newProduct.is_active}
+                                onChange={(e) => setNewProduct({ ...newProduct, is_active: e.target.checked })}
+                              />
+                              <Label htmlFor="is_active">Active</Label>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsAddProductDialogOpen(false)}>
+                      </ScrollArea>
+                      <DialogFooter className="flex-col sm:flex-row gap-2">
+                        <Button
+                          variant="outline"
+                          onClick={() => setIsAddProductDialogOpen(false)}
+                          className="w-full sm:w-auto"
+                        >
                           Cancel
                         </Button>
-                        <Button onClick={handleAddProduct} className="bg-amber-600 hover:bg-amber-700">
+                        <Button onClick={handleAddProduct} className="bg-amber-600 hover:bg-amber-700 w-full sm:w-auto">
                           Add Product
                         </Button>
                       </DialogFooter>
@@ -1265,7 +1281,7 @@ function AdminDashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <div className="flex flex-col gap-4 mb-6">
                   <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                     <Input
@@ -1276,7 +1292,7 @@ function AdminDashboard() {
                     />
                   </div>
                   <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                    <SelectTrigger className="w-full sm:w-48">
+                    <SelectTrigger className="w-full">
                       <Filter className="h-4 w-4 mr-2" />
                       <SelectValue placeholder="Filter by category" />
                     </SelectTrigger>
@@ -1291,64 +1307,78 @@ function AdminDashboard() {
                   </Select>
                 </div>
 
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Image</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Category</TableHead>
-                        <TableHead>Price</TableHead>
-                        <TableHead>Stock</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredProducts.map((product) => (
-                        <TableRow key={product.id}>
-                          <TableCell>
-                            <div className="relative">
+                {/* Products List - matching hero slides layout */}
+                <div className="space-y-4">
+                  {filteredProducts.map((product) => (
+                    <Card key={product.id}>
+                      <CardContent className="p-4">
+                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 flex-1">
+                            {/* Product Image */}
+                            <div className="relative w-16 h-16 border rounded overflow-hidden flex-shrink-0 bg-gray-50">
                               <NextImage
-                                src={product.primary_image_url || "/placeholder.svg?height=50&width=50&text=No+Image"}
+                                src={product.primary_image_url || "/placeholder.svg?height=64&width=64&text=No+Image"}
                                 alt={product.name}
-                                width={50}
-                                height={50}
-                                className="rounded-md object-cover"
+                                fill
+                                className="object-cover"
                                 onError={(e) => {
                                   const target = e.target as HTMLImageElement
-                                  target.src = "/placeholder.svg?height=50&width=50&text=No+Image"
+                                  target.src = "/placeholder.svg?height=64&width=64&text=No+Image"
                                 }}
                               />
                               {(product.additional_images?.length || 0) > 0 && (
-                                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs bg-amber-600">
+                                <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 text-xs bg-amber-600 flex items-center justify-center">
                                   +{product.additional_images?.length}
                                 </Badge>
                               )}
                             </div>
-                          </TableCell>
-                          <TableCell className="font-medium">{product.name}</TableCell>
-                          <TableCell>
-                            <Badge variant="secondary">{product.categories?.name || "Uncategorized"}</Badge>
-                          </TableCell>
-                          <TableCell className="font-semibold">${product.price.toLocaleString()}</TableCell>
-                          <TableCell>
-                            <Badge variant={product.stock_quantity < 5 ? "destructive" : "secondary"}>
-                              {product.stock_quantity}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex gap-1">
-                              {product.is_featured && <Badge variant="default">Featured</Badge>}
-                              <Badge variant={product.is_active ? "default" : "secondary"}>
+
+                            {/* Product Info */}
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold truncate">{product.name}</h3>
+                              <p className="text-sm text-gray-600 truncate">
+                                {product.categories?.name || "Uncategorized"}
+                              </p>
+                              <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 mt-1">
+                                <span className="font-semibold text-amber-600 text-base">
+                                  ${product.price.toLocaleString()}
+                                </span>
+                                {product.year && <span>• {product.year}</span>}
+                                {product.condition && <span>• {product.condition}</span>}
+                                {product.rarity && <span>• {product.rarity}</span>}
+                                {product.description && (
+                                  <span className="truncate max-w-xs">• {product.description}</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Status and Actions */}
+                          <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
+                            {/* Status Badges */}
+                            <div className="flex flex-col gap-1">
+                              {product.is_featured && (
+                                <Badge variant="default" className="text-xs bg-blue-600">
+                                  Featured
+                                </Badge>
+                              )}
+                              <Badge variant={product.is_active ? "default" : "secondary"} className="text-xs">
                                 {product.is_active ? "Active" : "Inactive"}
                               </Badge>
                             </div>
-                          </TableCell>
-                          <TableCell>
+
+                            {/* Stock Badge */}
+                            <Badge
+                              variant={product.stock_quantity < 5 ? "destructive" : "secondary"}
+                              className="text-xs"
+                            >
+                              Stock: {product.stock_quantity}
+                            </Badge>
+
+                            {/* Actions Dropdown */}
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm">
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                                   <MoreHorizontal className="h-4 w-4" />
                                 </Button>
                               </DropdownMenuTrigger>
@@ -1366,12 +1396,20 @@ function AdminDashboard() {
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </div>
+
+                {filteredProducts.length === 0 && (
+                  <div className="text-center py-12 text-gray-500">
+                    <Package className="h-16 w-16 mx-auto mb-4 text-gray-300" />
+                    <p className="text-lg font-medium">No products found</p>
+                    <p className="text-sm">Try adjusting your search or filters</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -1380,19 +1418,20 @@ function AdminDashboard() {
           <TabsContent value="categories">
             <Card>
               <CardHeader>
-                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                <div className="flex flex-col gap-4 items-start justify-between">
                   <div>
-                    <CardTitle>Category Management</CardTitle>
-                    <CardDescription>Organize your products into categories</CardDescription>
+                    <CardTitle className="text-lg sm:text-xl">Category Management</CardTitle>
+                    <CardDescription className="text-sm">Organize your products into categories</CardDescription>
                   </div>
                   <Dialog open={isAddCategoryDialogOpen} onOpenChange={setIsAddCategoryDialogOpen}>
                     <DialogTrigger asChild>
-                      <Button className="bg-amber-600 hover:bg-amber-700">
+                      <Button className="bg-amber-600 hover:bg-amber-700 w-full sm:w-auto">
                         <Plus className="h-4 w-4 mr-2" />
-                        Add New Category
+                        <span className="hidden sm:inline">Add New Category</span>
+                        <span className="sm:hidden">Add Category</span>
                       </Button>
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent className="w-[95vw] max-w-md">
                       <DialogHeader>
                         <DialogTitle>Add New Category</DialogTitle>
                         <DialogDescription>Create a new product category</DialogDescription>
@@ -1427,11 +1466,18 @@ function AdminDashboard() {
                           />
                         </div>
                       </div>
-                      <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsAddCategoryDialogOpen(false)}>
+                      <DialogFooter className="flex-col sm:flex-row gap-2">
+                        <Button
+                          variant="outline"
+                          onClick={() => setIsAddCategoryDialogOpen(false)}
+                          className="w-full sm:w-auto"
+                        >
                           Cancel
                         </Button>
-                        <Button onClick={handleAddCategory} className="bg-amber-600 hover:bg-amber-700">
+                        <Button
+                          onClick={handleAddCategory}
+                          className="bg-amber-600 hover:bg-amber-700 w-full sm:w-auto"
+                        >
                           Add Category
                         </Button>
                       </DialogFooter>
@@ -1444,19 +1490,19 @@ function AdminDashboard() {
                   {categories.map((category) => (
                     <Card key={category.id}>
                       <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div>
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                          <div className="flex-1">
                             <h3 className="font-semibold">{category.name}</h3>
-                            <p className="text-sm text-gray-600">{category.description}</p>
-                            <p className="text-xs text-gray-400">Slug: {category.slug}</p>
+                            <p className="text-sm text-gray-600 mt-1">{category.description}</p>
+                            <p className="text-xs text-gray-400 mt-1">Slug: {category.slug}</p>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Badge variant="secondary">
+                            <Badge variant="secondary" className="text-xs">
                               {products.filter((p) => p.category_id === category.id).length} products
                             </Badge>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm">
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                                   <MoreHorizontal className="h-4 w-4" />
                                 </Button>
                               </DropdownMenuTrigger>
@@ -1480,6 +1526,14 @@ function AdminDashboard() {
                     </Card>
                   ))}
                 </div>
+
+                {categories.length === 0 && (
+                  <div className="text-center py-8 text-gray-500">
+                    <Tag className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                    <p>No categories found</p>
+                    <p className="text-sm">Create your first category to get started</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -1488,259 +1542,281 @@ function AdminDashboard() {
           <TabsContent value="hero-slides">
             <Card>
               <CardHeader>
-                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                <div className="flex flex-col gap-4 items-start justify-between">
                   <div>
-                    <CardTitle>Hero Slideshow Management</CardTitle>
-                    <CardDescription>Manage the homepage hero slideshow content (Max 8 slides)</CardDescription>
+                    <CardTitle className="text-lg sm:text-xl">Hero Slideshow Management</CardTitle>
+                    <CardDescription className="text-sm">
+                      Manage the homepage hero slideshow content (Max 8 slides)
+                    </CardDescription>
                   </div>
                   <Dialog open={isAddHeroDialogOpen} onOpenChange={setIsAddHeroDialogOpen}>
                     <DialogTrigger asChild>
-                      <Button className="bg-amber-600 hover:bg-amber-700" disabled={heroSlides.length >= 8}>
+                      <Button
+                        className="bg-amber-600 hover:bg-amber-700 w-full sm:w-auto"
+                        disabled={heroSlides.length >= 8}
+                      >
                         <Plus className="h-4 w-4 mr-2" />
-                        Add Hero Slide {heroSlides.length >= 8 ? "(Limit Reached)" : `(${heroSlides.length}/8)`}
+                        <span className="hidden sm:inline">
+                          Add Hero Slide {heroSlides.length >= 8 ? "(Limit Reached)" : `(${heroSlides.length}/8)`}
+                        </span>
+                        <span className="sm:hidden">
+                          Add Slide {heroSlides.length >= 8 ? "(Max)" : `(${heroSlides.length}/8)`}
+                        </span>
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <DialogContent className="w-[95vw] max-w-2xl max-h-[95vh] overflow-hidden">
                       <DialogHeader>
                         <DialogTitle>Add New Hero Slide</DialogTitle>
                         <DialogDescription>Create a new hero slide for the homepage</DialogDescription>
                       </DialogHeader>
-                      <div className="grid gap-6 py-4">
-                        {/* Slide Type Selection */}
-                        <div>
-                          <Label>Slide Type</Label>
-                          <Select
-                            value={newHeroSlide.slide_type}
-                            onValueChange={(value: "manual" | "product") => {
-                              setNewHeroSlide({
-                                ...newHeroSlide,
-                                slide_type: value,
-                                product_id: value === "manual" ? null : newHeroSlide.product_id,
-                              })
-                            }}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a slide type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="manual">Manual Slide</SelectItem>
-                              <SelectItem value="product">Product-Based Slide</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-
-                        {/* Product Selection for Product-Based Slides */}
-                        {newHeroSlide.slide_type === "product" && (
+                      <ScrollArea className="max-h-[calc(95vh-120px)] pr-4">
+                        <div className="grid gap-6 py-4">
+                          {/* Slide Type Selection */}
                           <div>
-                            <Label>Select Product</Label>
+                            <Label>Slide Type</Label>
                             <Select
-                              value={newHeroSlide.product_id?.toString() || "none"}
-                              onValueChange={(value) => {
-                                if (value === "none") {
-                                  clearProductLink(false)
-                                } else {
-                                  handleProductSelection(value, false)
-                                }
+                              value={newHeroSlide.slide_type}
+                              onValueChange={(value: "manual" | "product") => {
+                                setNewHeroSlide({
+                                  ...newHeroSlide,
+                                  slide_type: value,
+                                  product_id: value === "manual" ? null : newHeroSlide.product_id,
+                                })
                               }}
                             >
                               <SelectTrigger>
-                                <SelectValue placeholder="Choose a product" />
+                                <SelectValue placeholder="Select a slide type" />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="none">No product selected</SelectItem>
-                                {products
-                                  .filter((p) => p.is_active)
-                                  .map((product) => (
-                                    <SelectItem key={product.id} value={product.id.toString()}>
-                                      {product.name} - ${product.price}
-                                    </SelectItem>
-                                  ))}
+                                <SelectItem value="manual">Manual Slide</SelectItem>
+                                <SelectItem value="product">Product-Based Slide</SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
-                        )}
 
-                        {/* Title and Subtitle */}
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <Label htmlFor="hero-title">Title *</Label>
-                            <Input
-                              id="hero-title"
-                              value={newHeroSlide.title}
-                              onChange={(e) => setNewHeroSlide({ ...newHeroSlide, title: e.target.value })}
-                              placeholder="e.g., COMPLETE SET"
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="hero-subtitle">Subtitle *</Label>
-                            <Input
-                              id="hero-subtitle"
-                              value={newHeroSlide.subtitle}
-                              onChange={(e) => setNewHeroSlide({ ...newHeroSlide, subtitle: e.target.value })}
-                              placeholder="e.g., $2 COMMEMORATIVE COIN COLLECTION"
-                            />
-                          </div>
-                        </div>
-
-                        {/* Price, Coins, and Years */}
-                        <div className="grid grid-cols-3 gap-4">
-                          <div>
-                            <Label htmlFor="hero-price">Price</Label>
-                            <Input
-                              id="hero-price"
-                              value={newHeroSlide.price || ""}
-                              onChange={(e) => setNewHeroSlide({ ...newHeroSlide, price: e.target.value })}
-                              placeholder="e.g., $1,850"
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="hero-coins">Coins Info</Label>
-                            <Input
-                              id="hero-coins"
-                              value={newHeroSlide.coins || ""}
-                              onChange={(e) => setNewHeroSlide({ ...newHeroSlide, coins: e.target.value })}
-                              placeholder="e.g., 57 Coins"
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="hero-years">Years</Label>
-                            <Input
-                              id="hero-years"
-                              value={newHeroSlide.years || ""}
-                              onChange={(e) => setNewHeroSlide({ ...newHeroSlide, years: e.target.value })}
-                              placeholder="e.g., 1988-2025"
-                            />
-                          </div>
-                        </div>
-
-                        {/* Link Options for Manual Slides */}
-                        {newHeroSlide.slide_type === "manual" && (
-                          <div className="space-y-4 p-4 border rounded-lg bg-gray-50">
-                            <Label className="text-sm font-medium">Link Options</Label>
-                            <div className="space-y-3">
-                              <div>
-                                <Label className="text-sm">Link to Product (Recommended)</Label>
-                                <Select
-                                  value={newHeroSlide.product_id?.toString() || "none"}
-                                  onValueChange={(value) => {
-                                    if (value === "none") {
-                                      clearProductLink(false)
-                                    } else {
-                                      const product = products.find((p) => p.id === Number(value))
-                                      setNewHeroSlide({
-                                        ...newHeroSlide,
-                                        product_id: Number(value),
-                                        custom_link: `/product/${product?.slug || value}`,
-                                      })
-                                    }
-                                  }}
-                                >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select a product to link to" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="none">No product link</SelectItem>
-                                    {products
-                                      .filter((p) => p.is_active)
-                                      .map((product) => (
-                                        <SelectItem key={product.id} value={product.id.toString()}>
-                                          {product.name} - ${product.price}
-                                        </SelectItem>
-                                      ))}
-                                  </SelectContent>
-                                </Select>
-                              </div>
-                              <div className="text-center text-sm text-gray-500">OR</div>
-                              <div>
-                                <Label htmlFor="hero-custom-link" className="text-sm">
-                                  Custom Link
-                                </Label>
-                                <Input
-                                  id="hero-custom-link"
-                                  value={newHeroSlide.custom_link || ""}
-                                  onChange={(e) => {
-                                    setNewHeroSlide({
-                                      ...newHeroSlide,
-                                      custom_link: e.target.value,
-                                      product_id: e.target.value ? null : newHeroSlide.product_id,
-                                    })
-                                  }}
-                                  placeholder="e.g., /catalog, /about, https://external-link.com"
-                                />
-                                <p className="text-xs text-gray-500 mt-1">
-                                  Leave empty to link to catalog. Can be internal (/catalog) or external (https://...)
-                                </p>
-                              </div>
+                          {/* Product Selection for Product-Based Slides */}
+                          {newHeroSlide.slide_type === "product" && (
+                            <div>
+                              <Label>Select Product</Label>
+                              <Select
+                                value={newHeroSlide.product_id?.toString() || "none"}
+                                onValueChange={(value) => {
+                                  if (value === "none") {
+                                    clearProductLink(false)
+                                  } else {
+                                    handleProductSelection(value, false)
+                                  }
+                                }}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Choose a product" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="none">No product selected</SelectItem>
+                                  {products
+                                    .filter((p) => p.is_active)
+                                    .map((product) => (
+                                      <SelectItem key={product.id} value={product.id.toString()}>
+                                        {product.name} - ${product.price}
+                                      </SelectItem>
+                                    ))}
+                                </SelectContent>
+                              </Select>
                             </div>
-                          </div>
-                        )}
+                          )}
 
-                        {/* Image Upload for Manual Slides */}
-                        {newHeroSlide.slide_type === "manual" && (
-                          <div>
-                            <Label>Hero Image</Label>
-                            <div className="space-y-4">
-                              <div className="relative">
-                                <Input
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={(e) => {
-                                    const file = e.target.files?.[0]
-                                    if (file) handleHeroImageUpload(file, false)
-                                  }}
-                                  disabled={uploadingHeroImage}
-                                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                />
-                                <Button disabled={uploadingHeroImage} className="bg-amber-600 hover:bg-amber-700">
-                                  <Upload className="h-4 w-4 mr-2" />
-                                  {uploadingHeroImage ? "Uploading..." : "Upload Image"}
-                                </Button>
-                              </div>
-                              {newHeroSlide.image_url && (
-                                <div className="relative w-32 h-20 border rounded overflow-hidden">
-                                  <NextImage
-                                    src={newHeroSlide.image_url || "/placeholder.svg"}
-                                    alt="Hero preview"
-                                    fill
-                                    className="object-cover"
-                                  />
-                                </div>
-                              )}
+                          {/* Title and Subtitle */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <Label htmlFor="hero-title">Title *</Label>
+                              <Input
+                                id="hero-title"
+                                value={newHeroSlide.title}
+                                onChange={(e) => setNewHeroSlide({ ...newHeroSlide, title: e.target.value })}
+                                placeholder="e.g., COMPLETE SET"
+                              />
                             </div>
-                          </div>
-                        )}
-
-                        {/* Product Image Preview for Product-Based Slides */}
-                        {newHeroSlide.slide_type === "product" && newHeroSlide.image_url && (
-                          <div>
-                            <Label>Product Image Preview</Label>
-                            <div className="relative w-32 h-20 border rounded overflow-hidden">
-                              <NextImage
-                                src={newHeroSlide.image_url || "/placeholder.svg"}
-                                alt="Product preview"
-                                fill
-                                className="object-cover"
+                            <div>
+                              <Label htmlFor="hero-subtitle">Subtitle *</Label>
+                              <Input
+                                id="hero-subtitle"
+                                value={newHeroSlide.subtitle}
+                                onChange={(e) => setNewHeroSlide({ ...newHeroSlide, subtitle: e.target.value })}
+                                placeholder="e.g., $2 COMMEMORATIVE COIN COLLECTION"
                               />
                             </div>
                           </div>
-                        )}
 
-                        {/* Active Checkbox */}
-                        <div className="flex items-center space-x-2">
-                          <input
-                            type="checkbox"
-                            id="hero-is_active"
-                            checked={newHeroSlide.is_active}
-                            onChange={(e) => setNewHeroSlide({ ...newHeroSlide, is_active: e.target.checked })}
-                          />
-                          <Label htmlFor="hero-is_active">Active</Label>
+                          {/* Price, Coins, and Years */}
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                              <Label htmlFor="hero-price">Price</Label>
+                              <Input
+                                id="hero-price"
+                                value={newHeroSlide.price || ""}
+                                onChange={(e) => setNewHeroSlide({ ...newHeroSlide, price: e.target.value })}
+                                placeholder="e.g., $1,850"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="hero-coins">Coins Info</Label>
+                              <Input
+                                id="hero-coins"
+                                value={newHeroSlide.coins || ""}
+                                onChange={(e) => setNewHeroSlide({ ...newHeroSlide, coins: e.target.value })}
+                                placeholder="e.g., 57 Coins"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="hero-years">Years</Label>
+                              <Input
+                                id="hero-years"
+                                value={newHeroSlide.years || ""}
+                                onChange={(e) => setNewHeroSlide({ ...newHeroSlide, years: e.target.value })}
+                                placeholder="e.g., 1988-2025"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Link Options for Manual Slides */}
+                          {newHeroSlide.slide_type === "manual" && (
+                            <div className="space-y-4 p-4 border rounded-lg bg-gray-50">
+                              <Label className="text-sm font-medium">Link Options</Label>
+                              <div className="space-y-3">
+                                <div>
+                                  <Label className="text-sm">Link to Product (Recommended)</Label>
+                                  <Select
+                                    value={newHeroSlide.product_id?.toString() || "none"}
+                                    onValueChange={(value) => {
+                                      if (value === "none") {
+                                        clearProductLink(false)
+                                      } else {
+                                        const product = products.find((p) => p.id === Number(value))
+                                        setNewHeroSlide({
+                                          ...newHeroSlide,
+                                          product_id: Number(value),
+                                          custom_link: `/product/${product?.slug || value}`,
+                                        })
+                                      }
+                                    }}
+                                  >
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Select a product to link to" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="none">No product link</SelectItem>
+                                      {products
+                                        .filter((p) => p.is_active)
+                                        .map((product) => (
+                                          <SelectItem key={product.id} value={product.id.toString()}>
+                                            {product.name} - ${product.price}
+                                          </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+                                <div className="text-center text-sm text-gray-500">OR</div>
+                                <div>
+                                  <Label htmlFor="hero-custom-link" className="text-sm">
+                                    Custom Link
+                                  </Label>
+                                  <Input
+                                    id="hero-custom-link"
+                                    value={newHeroSlide.custom_link || ""}
+                                    onChange={(e) => {
+                                      setNewHeroSlide({
+                                        ...newHeroSlide,
+                                        custom_link: e.target.value,
+                                        product_id: e.target.value ? null : newHeroSlide.product_id,
+                                      })
+                                    }}
+                                    placeholder="e.g., /catalog, /about, https://external-link.com"
+                                  />
+                                  <p className="text-xs text-gray-500 mt-1">
+                                    Leave empty to link to catalog. Can be internal (/catalog) or external (https://...)
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Image Upload for Manual Slides */}
+                          {newHeroSlide.slide_type === "manual" && (
+                            <div>
+                              <Label>Hero Image</Label>
+                              <div className="space-y-4">
+                                <div className="relative">
+                                  <Input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                      const file = e.target.files?.[0]
+                                      if (file) handleHeroImageUpload(file, false)
+                                    }}
+                                    disabled={uploadingHeroImage}
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                  />
+                                  <Button
+                                    disabled={uploadingHeroImage}
+                                    className="bg-amber-600 hover:bg-amber-700 w-full sm:w-auto"
+                                  >
+                                    <Upload className="h-4 w-4 mr-2" />
+                                    {uploadingHeroImage ? "Uploading..." : "Upload Image"}
+                                  </Button>
+                                </div>
+                                {newHeroSlide.image_url && (
+                                  <div className="relative w-32 h-20 border rounded overflow-hidden">
+                                    <NextImage
+                                      src={newHeroSlide.image_url || "/placeholder.svg"}
+                                      alt="Hero preview"
+                                      fill
+                                      className="object-cover"
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Product Image Preview for Product-Based Slides */}
+                          {newHeroSlide.slide_type === "product" && newHeroSlide.image_url && (
+                            <div>
+                              <Label>Product Image Preview</Label>
+                              <div className="relative w-32 h-20 border rounded overflow-hidden">
+                                <NextImage
+                                  src={newHeroSlide.image_url || "/placeholder.svg"}
+                                  alt="Product preview"
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Active Checkbox */}
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              id="hero-is_active"
+                              checked={newHeroSlide.is_active}
+                              onChange={(e) => setNewHeroSlide({ ...newHeroSlide, is_active: e.target.checked })}
+                            />
+                            <Label htmlFor="hero-is_active">Active</Label>
+                          </div>
                         </div>
-                      </div>
-                      <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsAddHeroDialogOpen(false)}>
+                      </ScrollArea>
+                      <DialogFooter className="flex-col sm:flex-row gap-2">
+                        <Button
+                          variant="outline"
+                          onClick={() => setIsAddHeroDialogOpen(false)}
+                          className="w-full sm:w-auto"
+                        >
                           Cancel
                         </Button>
-                        <Button onClick={handleAddHeroSlide} className="bg-amber-600 hover:bg-amber-700">
+                        <Button
+                          onClick={handleAddHeroSlide}
+                          className="bg-amber-600 hover:bg-amber-700 w-full sm:w-auto"
+                        >
                           Add Hero Slide
                         </Button>
                       </DialogFooter>
@@ -1753,10 +1829,10 @@ function AdminDashboard() {
                   {heroSlides.map((slide) => (
                     <Card key={slide.id}>
                       <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4">
+                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 flex-1">
                             {slide.image_url && (
-                              <div className="relative w-16 h-10 border rounded overflow-hidden">
+                              <div className="relative w-16 h-10 border rounded overflow-hidden flex-shrink-0">
                                 <NextImage
                                   src={slide.image_url || "/placeholder.svg"}
                                   alt={slide.title}
@@ -1765,31 +1841,36 @@ function AdminDashboard() {
                                 />
                               </div>
                             )}
-                            <div>
-                              <h3 className="font-semibold">{slide.title}</h3>
-                              <p className="text-sm text-gray-600">{slide.subtitle}</p>
-                              <div className="flex items-center gap-2 text-xs text-gray-500">
-                                <Badge variant={slide.slide_type === "product" ? "default" : "secondary"}>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold truncate">{slide.title}</h3>
+                              <p className="text-sm text-gray-600 truncate">{slide.subtitle}</p>
+                              <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 mt-1">
+                                <Badge
+                                  variant={slide.slide_type === "product" ? "default" : "secondary"}
+                                  className="text-xs"
+                                >
                                   {slide.slide_type === "product" ? "Product" : "Manual"}
                                 </Badge>
                                 {slide.price && <span>{slide.price}</span>}
                                 {slide.coins && <span>• {slide.coins}</span>}
                                 {slide.years && <span>• {slide.years}</span>}
-                                {slide.custom_link && <span>• Link: {slide.custom_link}</span>}
+                                {slide.custom_link && <span className="truncate">• Link: {slide.custom_link}</span>}
                                 {slide.slide_type === "product" && slide.products?.slug && (
-                                  <span>• Link: /product/{slide.products.slug}</span>
+                                  <span className="truncate">• Link: /product/{slide.products.slug}</span>
                                 )}
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <Badge variant={slide.is_active ? "default" : "secondary"}>
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            <Badge variant={slide.is_active ? "default" : "secondary"} className="text-xs">
                               {slide.is_active ? "Active" : "Inactive"}
                             </Badge>
-                            <Badge variant="outline">Order: {slide.display_order}</Badge>
+                            <Badge variant="outline" className="text-xs">
+                              Order: {slide.display_order}
+                            </Badge>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm">
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                                   <MoreHorizontal className="h-4 w-4" />
                                 </Button>
                               </DropdownMenuTrigger>
@@ -1814,7 +1895,9 @@ function AdminDashboard() {
                   ))}
                   {heroSlides.length === 0 && (
                     <div className="text-center py-8 text-gray-500">
-                      No hero slides found. Add your first slide to get started.
+                      <ImageIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                      <p>No hero slides found</p>
+                      <p className="text-sm">Add your first slide to get started</p>
                     </div>
                   )}
                 </div>
@@ -1825,213 +1908,217 @@ function AdminDashboard() {
 
         {/* Edit Product Dialog */}
         <Dialog open={isEditProductDialogOpen} onOpenChange={setIsEditProductDialogOpen}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="w-[95vw] max-w-4xl max-h-[95vh] overflow-hidden">
             <DialogHeader>
               <DialogTitle>Edit Product</DialogTitle>
               <DialogDescription>Update the product details</DialogDescription>
             </DialogHeader>
-            {editingProduct && (
-              <div className="grid gap-4 py-4">
-                {/* Basic Information */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="edit-name">Product Name *</Label>
-                    <Input
-                      id="edit-name"
-                      value={editingProduct.name}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
-                      placeholder="e.g., 1966 Round 50 Cent"
-                    />
+            <ScrollArea className="max-h-[calc(95vh-120px)] pr-4">
+              {editingProduct && (
+                <div className="grid gap-4 py-4">
+                  {/* Basic Information */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="edit-name">Product Name *</Label>
+                      <Input
+                        id="edit-name"
+                        value={editingProduct.name}
+                        onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                        placeholder="e.g., 1966 Round 50 Cent"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-price">Price ($) *</Label>
+                      <Input
+                        id="edit-price"
+                        type="number"
+                        step="0.01"
+                        value={editingProduct.price}
+                        onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
+                        placeholder="0.00"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <Label htmlFor="edit-price">Price ($) *</Label>
-                    <Input
-                      id="edit-price"
-                      type="number"
-                      step="0.01"
-                      value={editingProduct.price}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
-                      placeholder="0.00"
-                    />
-                  </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="edit-category">Category *</Label>
-                    <Select
-                      value={editingProduct.category_id?.toString()}
-                      onValueChange={(value) => setEditingProduct({ ...editingProduct, category_id: Number(value) })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem key={category.id} value={category.id.toString()}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="edit-category">Category *</Label>
+                      <Select
+                        value={editingProduct.category_id?.toString()}
+                        onValueChange={(value) => setEditingProduct({ ...editingProduct, category_id: Number(value) })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id.toString()}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-stock">Stock Quantity</Label>
+                      <Input
+                        id="edit-stock"
+                        type="number"
+                        value={editingProduct.stock_quantity}
+                        onChange={(e) =>
+                          setEditingProduct({ ...editingProduct, stock_quantity: Number(e.target.value) })
+                        }
+                        placeholder="0"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <Label htmlFor="edit-stock">Stock Quantity</Label>
-                    <Input
-                      id="edit-stock"
-                      type="number"
-                      value={editingProduct.stock_quantity}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, stock_quantity: Number(e.target.value) })}
-                      placeholder="0"
-                    />
-                  </div>
-                </div>
 
-                {/* Additional fields */}
-                <div className="grid grid-cols-4 gap-4">
-                  <div>
-                    <Label htmlFor="edit-year">Year</Label>
-                    <Input
-                      id="edit-year"
-                      type="number"
-                      value={editingProduct.year || ""}
-                      onChange={(e) =>
-                        setEditingProduct({ ...editingProduct, year: e.target.value ? Number(e.target.value) : null })
-                      }
-                    />
+                  {/* Additional fields */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div>
+                      <Label htmlFor="edit-year">Year</Label>
+                      <Input
+                        id="edit-year"
+                        type="number"
+                        value={editingProduct.year || ""}
+                        onChange={(e) =>
+                          setEditingProduct({ ...editingProduct, year: e.target.value ? Number(e.target.value) : null })
+                        }
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-condition">Condition</Label>
+                      <Select
+                        value={editingProduct.condition || ""}
+                        onValueChange={(value) => setEditingProduct({ ...editingProduct, condition: value })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {conditions.map((condition) => (
+                            <SelectItem key={condition} value={condition}>
+                              {condition}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-rarity">Rarity</Label>
+                      <Select
+                        value={editingProduct.rarity || ""}
+                        onValueChange={(value) => setEditingProduct({ ...editingProduct, rarity: value })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {rarities.map((rarity) => (
+                            <SelectItem key={rarity} value={rarity}>
+                              {rarity}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-country">Country</Label>
+                      <Input
+                        id="edit-country"
+                        value={editingProduct.country}
+                        onChange={(e) => setEditingProduct({ ...editingProduct, country: e.target.value })}
+                        placeholder="Australia"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <Label htmlFor="edit-condition">Condition</Label>
-                    <Select
-                      value={editingProduct.condition || ""}
-                      onValueChange={(value) => setEditingProduct({ ...editingProduct, condition: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select condition" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {conditions.map((condition) => (
-                          <SelectItem key={condition} value={condition}>
-                            {condition}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="edit-rarity">Rarity</Label>
-                    <Select
-                      value={editingProduct.rarity || ""}
-                      onValueChange={(value) => setEditingProduct({ ...editingProduct, rarity: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select rarity" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {rarities.map((rarity) => (
-                          <SelectItem key={rarity} value={rarity}>
-                            {rarity}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="edit-country">Country</Label>
-                    <Input
-                      id="edit-country"
-                      value={editingProduct.country}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, country: e.target.value })}
-                      placeholder="Australia"
-                    />
-                  </div>
-                </div>
 
-                {/* Additional fields for sets */}
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <Label htmlFor="edit-set_size">Set Size</Label>
-                    <Input
-                      id="edit-set_size"
-                      type="number"
-                      value={editingProduct.set_size || ""}
-                      onChange={(e) =>
-                        setEditingProduct({
-                          ...editingProduct,
-                          set_size: e.target.value ? Number(e.target.value) : null,
-                        })
-                      }
-                      placeholder="Number of items in set"
-                    />
+                  {/* Additional fields for sets */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="edit-set_size">Set Size</Label>
+                      <Input
+                        id="edit-set_size"
+                        type="number"
+                        value={editingProduct.set_size || ""}
+                        onChange={(e) =>
+                          setEditingProduct({
+                            ...editingProduct,
+                            set_size: e.target.value ? Number(e.target.value) : null,
+                          })
+                        }
+                        placeholder="Number of items"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-set_type">Set Type</Label>
+                      <Input
+                        id="edit-set_type"
+                        value={editingProduct.set_type || ""}
+                        onChange={(e) => setEditingProduct({ ...editingProduct, set_type: e.target.value })}
+                        placeholder="e.g., Commemorative"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-metal">Metal</Label>
+                      <Input
+                        id="edit-metal"
+                        value={editingProduct.metal || ""}
+                        onChange={(e) => setEditingProduct({ ...editingProduct, metal: e.target.value })}
+                        placeholder="e.g., Silver, Gold"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <Label htmlFor="edit-set_type">Set Type</Label>
-                    <Input
-                      id="edit-set_type"
-                      value={editingProduct.set_type || ""}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, set_type: e.target.value })}
-                      placeholder="e.g., Commemorative, Proof"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="edit-metal">Metal</Label>
-                    <Input
-                      id="edit-metal"
-                      value={editingProduct.metal || ""}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, metal: e.target.value })}
-                      placeholder="e.g., Silver, Gold, Bronze"
-                    />
-                  </div>
-                </div>
 
-                <div>
-                  <Label htmlFor="edit-description">Description</Label>
-                  <Textarea
-                    id="edit-description"
-                    value={editingProduct.description || ""}
-                    onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
-                    placeholder="Enter product description..."
-                    rows={3}
+                  <div>
+                    <Label htmlFor="edit-description">Description</Label>
+                    <Textarea
+                      id="edit-description"
+                      value={editingProduct.description || ""}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                      placeholder="Enter product description..."
+                      rows={3}
+                    />
+                  </div>
+
+                  {/* Image Manager */}
+                  <ImageManager
+                    images={[editingProduct.primary_image_url, ...(editingProduct.additional_images || [])].filter(
+                      Boolean,
+                    )}
+                    onImagesChange={(images) => handleImagesChange(images, true)}
+                    isUploading={uploadingImage}
+                    onUpload={(file) => handleImageUpload(file, true)}
                   />
-                </div>
 
-                {/* Image Manager */}
-                <ImageManager
-                  images={[editingProduct.primary_image_url, ...(editingProduct.additional_images || [])].filter(
-                    Boolean,
-                  )}
-                  onImagesChange={(images) => handleImagesChange(images, true)}
-                  isUploading={uploadingImage}
-                  onUpload={(file) => handleImageUpload(file, true)}
-                />
-
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id="edit-is_featured"
-                      checked={editingProduct.is_featured}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, is_featured: e.target.checked })}
-                    />
-                    <Label htmlFor="edit-is_featured">Featured Product</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id="edit-is_active"
-                      checked={editingProduct.is_active}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, is_active: e.target.checked })}
-                    />
-                    <Label htmlFor="edit-is_active">Active</Label>
+                  <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="edit-is_featured"
+                        checked={editingProduct.is_featured}
+                        onChange={(e) => setEditingProduct({ ...editingProduct, is_featured: e.target.checked })}
+                      />
+                      <Label htmlFor="edit-is_featured">Featured Product</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="edit-is_active"
+                        checked={editingProduct.is_active}
+                        onChange={(e) => setEditingProduct({ ...editingProduct, is_active: e.target.checked })}
+                      />
+                      <Label htmlFor="edit-is_active">Active</Label>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsEditProductDialogOpen(false)}>
+              )}
+            </ScrollArea>
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button variant="outline" onClick={() => setIsEditProductDialogOpen(false)} className="w-full sm:w-auto">
                 Cancel
               </Button>
-              <Button onClick={handleEditProduct} className="bg-amber-600 hover:bg-amber-700">
+              <Button onClick={handleEditProduct} className="bg-amber-600 hover:bg-amber-700 w-full sm:w-auto">
                 Save Changes
               </Button>
             </DialogFooter>
@@ -2040,7 +2127,7 @@ function AdminDashboard() {
 
         {/* Edit Category Dialog */}
         <Dialog open={isEditCategoryDialogOpen} onOpenChange={setIsEditCategoryDialogOpen}>
-          <DialogContent>
+          <DialogContent className="w-[95vw] max-w-md">
             <DialogHeader>
               <DialogTitle>Edit Category</DialogTitle>
               <DialogDescription>Update the category details</DialogDescription>
@@ -2077,11 +2164,11 @@ function AdminDashboard() {
                 </div>
               </div>
             )}
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsEditCategoryDialogOpen(false)}>
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button variant="outline" onClick={() => setIsEditCategoryDialogOpen(false)} className="w-full sm:w-auto">
                 Cancel
               </Button>
-              <Button onClick={handleEditCategory} className="bg-amber-600 hover:bg-amber-700">
+              <Button onClick={handleEditCategory} className="bg-amber-600 hover:bg-amber-700 w-full sm:w-auto">
                 Save Changes
               </Button>
             </DialogFooter>
@@ -2090,258 +2177,268 @@ function AdminDashboard() {
 
         {/* Edit Hero Slide Dialog */}
         <Dialog open={isEditHeroDialogOpen} onOpenChange={setIsEditHeroDialogOpen}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="w-[95vw] max-w-2xl max-h-[95vh] overflow-hidden">
             <DialogHeader>
               <DialogTitle>Edit Hero Slide</DialogTitle>
               <DialogDescription>Update the hero slide details</DialogDescription>
             </DialogHeader>
-            {editingHeroSlide && (
-              <div className="grid gap-6 py-4">
-                {/* Slide Type Selection */}
-                <div>
-                  <Label>Slide Type</Label>
-                  <Select
-                    value={editingHeroSlide.slide_type || "manual"}
-                    onValueChange={(value: "manual" | "product") => {
-                      setEditingHeroSlide({
-                        ...editingHeroSlide,
-                        slide_type: value,
-                        product_id: value === "manual" ? null : editingHeroSlide.product_id,
-                      })
-                    }}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a slide type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="manual">Manual Slide</SelectItem>
-                      <SelectItem value="product">Product-Based Slide</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Product Selection for Product-Based Slides */}
-                {editingHeroSlide.slide_type === "product" && (
+            <ScrollArea className="max-h-[calc(95vh-120px)] pr-4">
+              {editingHeroSlide && (
+                <div className="grid gap-6 py-4">
+                  {/* Slide Type Selection */}
                   <div>
-                    <Label>Select Product</Label>
+                    <Label>Slide Type</Label>
                     <Select
-                      value={editingHeroSlide.product_id?.toString() || "none"}
-                      onValueChange={(value) => {
-                        if (value === "none") {
-                          clearProductLink(true)
-                        } else {
-                          handleProductSelection(value, true)
-                        }
+                      value={editingHeroSlide.slide_type || "manual"}
+                      onValueChange={(value: "manual" | "product") => {
+                        setEditingHeroSlide({
+                          ...editingHeroSlide,
+                          slide_type: value,
+                          product_id: value === "manual" ? null : editingHeroSlide.product_id,
+                        })
                       }}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Choose a product" />
+                        <SelectValue placeholder="Select a slide type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="none">No product selected</SelectItem>
-                        {products
-                          .filter((p) => p.is_active)
-                          .map((product) => (
-                            <SelectItem key={product.id} value={product.id.toString()}>
-                              {product.name} - ${product.price}
-                            </SelectItem>
-                          ))}
+                        <SelectItem value="manual">Manual Slide</SelectItem>
+                        <SelectItem value="product">Product-Based Slide</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
-                )}
 
-                {/* Title and Subtitle */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="edit-hero-title">Title *</Label>
-                    <Input
-                      id="edit-hero-title"
-                      value={editingHeroSlide.title || ""}
-                      onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, title: e.target.value })}
-                      placeholder="e.g., COMPLETE SET"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="edit-hero-subtitle">Subtitle *</Label>
-                    <Input
-                      id="edit-hero-subtitle"
-                      value={editingHeroSlide.subtitle || ""}
-                      onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, subtitle: e.target.value })}
-                      placeholder="e.g., $2 COMMEMORATIVE COIN COLLECTION"
-                    />
-                  </div>
-                </div>
+                  {/* Product Selection for Product-Based Slides */}
+                  {editingHeroSlide.slide_type === "product" && (
+                    <div>
+                      <Label>Select Product</Label>
+                      <Select
+                        value={editingHeroSlide.product_id?.toString() || "none"}
+                        onValueChange={(value) => {
+                          if (value === "none") {
+                            clearProductLink(true)
+                          } else {
+                            handleProductSelection(value, true)
+                          }
+                        }}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Choose a product" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">No product selected</SelectItem>
+                          {products
+                            .filter((p) => p.is_active)
+                            .map((product) => (
+                              <SelectItem key={product.id} value={product.id.toString()}>
+                                {product.name} - ${product.price}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
 
-                {/* Price, Coins, and Years */}
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <Label htmlFor="edit-hero-price">Price</Label>
-                    <Input
-                      id="edit-hero-price"
-                      value={editingHeroSlide.price || ""}
-                      onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, price: e.target.value })}
-                      placeholder="e.g., $1,850"
-                    />
+                  {/* Title and Subtitle */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="edit-hero-title">Title *</Label>
+                      <Input
+                        id="edit-hero-title"
+                        value={editingHeroSlide.title || ""}
+                        onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, title: e.target.value })}
+                        placeholder="e.g., COMPLETE SET"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-hero-subtitle">Subtitle *</Label>
+                      <Input
+                        id="edit-hero-subtitle"
+                        value={editingHeroSlide.subtitle || ""}
+                        onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, subtitle: e.target.value })}
+                        placeholder="e.g., $2 COMMEMORATIVE COIN COLLECTION"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <Label htmlFor="edit-hero-coins">Coins Info</Label>
-                    <Input
-                      id="edit-hero-coins"
-                      value={editingHeroSlide.coins || ""}
-                      onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, coins: e.target.value })}
-                      placeholder="e.g., 57 Coins"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="edit-hero-years">Years</Label>
-                    <Input
-                      id="edit-hero-years"
-                      value={editingHeroSlide.years || ""}
-                      onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, years: e.target.value })}
-                      placeholder="e.g., 1988-2025"
-                    />
-                  </div>
-                </div>
 
-                {/* Link Options for Manual Slides */}
-                {editingHeroSlide.slide_type === "manual" && (
-                  <div className="space-y-4 p-4 border rounded-lg bg-gray-50">
-                    <Label className="text-sm font-medium">Link Options</Label>
-                    <div className="space-y-3">
-                      <div>
-                        <Label className="text-sm">Link to Product (Recommended)</Label>
-                        <Select
-                          value={editingHeroSlide.product_id?.toString() || "none"}
-                          onValueChange={(value) => {
-                            if (value === "none") {
-                              clearProductLink(true)
-                            } else {
-                              const product = products.find((p) => p.id === Number(value))
+                  {/* Price, Coins, and Years */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="edit-hero-price">Price</Label>
+                      <Input
+                        id="edit-hero-price"
+                        value={editingHeroSlide.price || ""}
+                        onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, price: e.target.value })}
+                        placeholder="e.g., $1,850"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-hero-coins">Coins Info</Label>
+                      <Input
+                        id="edit-hero-coins"
+                        value={editingHeroSlide.coins || ""}
+                        onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, coins: e.target.value })}
+                        placeholder="e.g., 57 Coins"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="edit-hero-years">Years</Label>
+                      <Input
+                        id="edit-hero-years"
+                        value={editingHeroSlide.years || ""}
+                        onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, years: e.target.value })}
+                        placeholder="e.g., 1988-2025"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Link Options for Manual Slides */}
+                  {editingHeroSlide.slide_type === "manual" && (
+                    <div className="space-y-4 p-4 border rounded-lg bg-gray-50">
+                      <Label className="text-sm font-medium">Link Options</Label>
+                      <div className="space-y-3">
+                        <div>
+                          <Label className="text-sm">Link to Product (Recommended)</Label>
+                          <Select
+                            value={editingHeroSlide.product_id?.toString() || "none"}
+                            onValueChange={(value) => {
+                              if (value === "none") {
+                                clearProductLink(true)
+                              } else {
+                                const product = products.find((p) => p.id === Number(value))
+                                setEditingHeroSlide({
+                                  ...editingHeroSlide,
+                                  product_id: Number(value),
+                                  custom_link: `/product/${product?.slug || value}`,
+                                })
+                              }
+                            }}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a product to link to" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="none">No product link</SelectItem>
+                              {products
+                                .filter((p) => p.is_active)
+                                .map((product) => (
+                                  <SelectItem key={product.id} value={product.id.toString()}>
+                                    {product.name} - ${product.price}
+                                  </SelectItem>
+                                ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="text-center text-sm text-gray-500">OR</div>
+                        <div>
+                          <Label htmlFor="edit-hero-custom-link" className="text-sm">
+                            Custom Link
+                          </Label>
+                          <Input
+                            id="edit-hero-custom-link"
+                            value={editingHeroSlide.custom_link || ""}
+                            onChange={(e) => {
                               setEditingHeroSlide({
                                 ...editingHeroSlide,
-                                product_id: Number(value),
-                                custom_link: `/product/${product?.slug || value}`,
+                                custom_link: e.target.value,
+                                product_id: e.target.value ? null : editingHeroSlide.product_id,
                               })
-                            }
-                          }}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a product to link to" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="none">No product link</SelectItem>
-                            {products
-                              .filter((p) => p.is_active)
-                              .map((product) => (
-                                <SelectItem key={product.id} value={product.id.toString()}>
-                                  {product.name} - ${product.price}
-                                </SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="text-center text-sm text-gray-500">OR</div>
-                      <div>
-                        <Label htmlFor="edit-hero-custom-link" className="text-sm">
-                          Custom Link
-                        </Label>
-                        <Input
-                          id="edit-hero-custom-link"
-                          value={editingHeroSlide.custom_link || ""}
-                          onChange={(e) => {
-                            setEditingHeroSlide({
-                              ...editingHeroSlide,
-                              custom_link: e.target.value,
-                              product_id: e.target.value ? null : editingHeroSlide.product_id,
-                            })
-                          }}
-                          placeholder="e.g., /catalog, /about, https://external-link.com"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">
-                          Leave empty to link to catalog. Can be internal (/catalog) or external (https://...)
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Display Order and Active */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="edit-hero-order">Display Order</Label>
-                    <Input
-                      id="edit-hero-order"
-                      type="number"
-                      value={editingHeroSlide.display_order || 0}
-                      onChange={(e) =>
-                        setEditingHeroSlide({ ...editingHeroSlide, display_order: Number(e.target.value) || 0 })
-                      }
-                      min="1"
-                    />
-                  </div>
-                  <div className="flex items-center space-x-2 pt-6">
-                    <input
-                      type="checkbox"
-                      id="edit-hero-is_active"
-                      checked={editingHeroSlide.is_active ?? true}
-                      onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, is_active: e.target.checked })}
-                    />
-                    <Label htmlFor="edit-hero-is_active">Active</Label>
-                  </div>
-                </div>
-
-                {/* Image Upload for Manual Slides */}
-                {editingHeroSlide.slide_type === "manual" && (
-                  <div>
-                    <Label>Hero Image</Label>
-                    <div className="space-y-4">
-                      <div className="relative">
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0]
-                            if (file) handleHeroImageUpload(file, true)
-                          }}
-                          disabled={uploadingHeroImage}
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        />
-                        <Button disabled={uploadingHeroImage} className="bg-amber-600 hover:bg-amber-700">
-                          <Upload className="h-4 w-4 mr-2" />
-                          {uploadingHeroImage ? "Uploading..." : "Upload New Image"}
-                        </Button>
-                      </div>
-                      {editingHeroSlide.image_url && (
-                        <div className="relative w-32 h-20 border rounded overflow-hidden">
-                          <NextImage
-                            src={editingHeroSlide.image_url}
-                            alt="Hero preview"
-                            fill
-                            className="object-cover"
+                            }}
+                            placeholder="e.g., /catalog, /about, https://external-link.com"
                           />
+                          <p className="text-xs text-gray-500 mt-1">
+                            Leave empty to link to catalog. Can be internal (/catalog) or external (https://...)
+                          </p>
                         </div>
-                      )}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Product Image Preview for Product-Based Slides */}
-                {editingHeroSlide.slide_type === "product" && editingHeroSlide.image_url && (
-                  <div>
-                    <Label>Product Image Preview</Label>
-                    <div className="relative w-32 h-20 border rounded overflow-hidden">
-                      <NextImage src={editingHeroSlide.image_url} alt="Product preview" fill className="object-cover" />
+                  {/* Display Order and Active */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="edit-hero-order">Display Order</Label>
+                      <Input
+                        id="edit-hero-order"
+                        type="number"
+                        value={editingHeroSlide.display_order || 0}
+                        onChange={(e) =>
+                          setEditingHeroSlide({ ...editingHeroSlide, display_order: Number(e.target.value) || 0 })
+                        }
+                        min="1"
+                      />
+                    </div>
+                    <div className="flex items-center space-x-2 pt-6">
+                      <input
+                        type="checkbox"
+                        id="edit-hero-is_active"
+                        checked={editingHeroSlide.is_active ?? true}
+                        onChange={(e) => setEditingHeroSlide({ ...editingHeroSlide, is_active: e.target.checked })}
+                      />
+                      <Label htmlFor="edit-hero-is_active">Active</Label>
                     </div>
                   </div>
-                )}
-              </div>
-            )}
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsEditHeroDialogOpen(false)}>
+
+                  {/* Image Upload for Manual Slides */}
+                  {editingHeroSlide.slide_type === "manual" && (
+                    <div>
+                      <Label>Hero Image</Label>
+                      <div className="space-y-4">
+                        <div className="relative">
+                          <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0]
+                              if (file) handleHeroImageUpload(file, true)
+                            }}
+                            disabled={uploadingHeroImage}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          />
+                          <Button
+                            disabled={uploadingHeroImage}
+                            className="bg-amber-600 hover:bg-amber-700 w-full sm:w-auto"
+                          >
+                            <Upload className="h-4 w-4 mr-2" />
+                            {uploadingHeroImage ? "Uploading..." : "Upload New Image"}
+                          </Button>
+                        </div>
+                        {editingHeroSlide.image_url && (
+                          <div className="relative w-32 h-20 border rounded overflow-hidden">
+                            <NextImage
+                              src={editingHeroSlide.image_url}
+                              alt="Hero preview"
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Product Image Preview for Product-Based Slides */}
+                  {editingHeroSlide.slide_type === "product" && editingHeroSlide.image_url && (
+                    <div>
+                      <Label>Product Image Preview</Label>
+                      <div className="relative w-32 h-20 border rounded overflow-hidden">
+                        <NextImage
+                          src={editingHeroSlide.image_url}
+                          alt="Product preview"
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </ScrollArea>
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button variant="outline" onClick={() => setIsEditHeroDialogOpen(false)} className="w-full sm:w-auto">
                 Cancel
               </Button>
-              <Button onClick={handleEditHeroSlide} className="bg-amber-600 hover:bg-amber-700">
+              <Button onClick={handleEditHeroSlide} className="bg-amber-600 hover:bg-amber-700 w-full sm:w-auto">
                 Save Changes
               </Button>
             </DialogFooter>
