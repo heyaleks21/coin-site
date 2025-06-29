@@ -1,147 +1,331 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import Navigation from "@/components/Navigation"
-import { AlertCircle, CheckCircle, XCircle } from "lucide-react"
+import { RotateCcw, AlertCircle, CheckCircle, XCircle, Clock, Package, Phone, Mail, MapPin } from "lucide-react"
 
 export default function ReturnsPolicyPage() {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen bg-gray-50 py-12">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold text-center">Returns & Refunds Policy</CardTitle>
-              <p className="text-center text-gray-600">Last updated: {new Date().toLocaleDateString()}</p>
-            </CardHeader>
-            <CardContent className="prose prose-gray max-w-none">
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <h3 className="text-blue-800 font-semibold mb-2">Important Notice</h3>
-                    <p className="text-blue-700 text-sm">
-                      Due to the nature of collectible coins and their value, all sales are carefully considered. Please
-                      read our returns policy carefully before making a purchase.
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 py-12">
+        <div className="container mx-auto px-4 max-w-5xl">
+          {/* Header Section */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-full mb-6">
+              <RotateCcw className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Returns & Refunds Policy</h1>
+            <p className="text-xl text-gray-600 mb-4">Fair returns for peace of mind</p>
+            <Badge variant="secondary" className="text-sm">
+              Last updated: {new Date().toLocaleDateString()}
+            </Badge>
+          </div>
+
+          {/* Important Notice */}
+          <Alert className="mb-8 border-blue-200 bg-blue-50">
+            <AlertCircle className="h-4 w-4 text-blue-600" />
+            <AlertDescription className="text-blue-800">
+              <strong>Important Notice:</strong> Due to the nature of collectible coins and their value, all sales are
+              carefully considered. Please read our returns policy carefully before making a purchase.
+            </AlertDescription>
+          </Alert>
+
+          {/* Quick Reference */}
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <Card className="text-center border-green-200">
+              <CardContent className="pt-6">
+                <Clock className="h-12 w-12 text-green-600 mx-auto mb-4" />
+                <h3 className="font-semibold text-lg mb-2">14 Days</h3>
+                <p className="text-gray-600 text-sm">Return period from delivery</p>
+              </CardContent>
+            </Card>
+            <Card className="text-center border-blue-200">
+              <CardContent className="pt-6">
+                <Package className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+                <h3 className="font-semibold text-lg mb-2">Original Condition</h3>
+                <p className="text-gray-600 text-sm">Items must be unopened & complete</p>
+              </CardContent>
+            </Card>
+            <Card className="text-center border-purple-200">
+              <CardContent className="pt-6">
+                <RotateCcw className="h-12 w-12 text-purple-600 mx-auto mb-4" />
+                <h3 className="font-semibold text-lg mb-2">Easy Process</h3>
+                <p className="text-gray-600 text-sm">Contact us first for RMA number</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Content */}
+          <div className="grid gap-8">
+            {/* Return Period */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-green-600" />
+                  1. Return Period
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-700">
+                  You have <strong className="text-green-600">14 days</strong> from the date of delivery to return items
+                  for a refund, provided they meet our return conditions outlined below.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Improved Eligible vs Non-Eligible Returns */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card className="overflow-hidden">
+                <CardHeader className="bg-green-600 text-white">
+                  <CardTitle className="flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5" />
+                    2. We Accept Returns For
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <ul className="space-y-4">
+                    <li className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mt-0.5">
+                        <CheckCircle className="h-4 w-4 text-green-600" />
+                      </div>
+                      <span className="text-gray-700">Items that arrive damaged or defective</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mt-0.5">
+                        <CheckCircle className="h-4 w-4 text-green-600" />
+                      </div>
+                      <span className="text-gray-700">Items significantly different from description</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mt-0.5">
+                        <CheckCircle className="h-4 w-4 text-green-600" />
+                      </div>
+                      <span className="text-gray-700">Wrong items sent due to our error</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mt-0.5">
+                        <CheckCircle className="h-4 w-4 text-green-600" />
+                      </div>
+                      <span className="text-gray-700">Items in original condition with all packaging</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="overflow-hidden">
+                <CardHeader className="bg-red-600 text-white">
+                  <CardTitle className="flex items-center gap-2">
+                    <XCircle className="h-5 w-5" />
+                    3. We Cannot Accept Returns For
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <ul className="space-y-4">
+                    <li className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-6 h-6 bg-red-100 rounded-full flex items-center justify-center mt-0.5">
+                        <XCircle className="h-4 w-4 text-red-600" />
+                      </div>
+                      <span className="text-gray-700">Items damaged by mishandling after delivery</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-6 h-6 bg-red-100 rounded-full flex items-center justify-center mt-0.5">
+                        <XCircle className="h-4 w-4 text-red-600" />
+                      </div>
+                      <span className="text-gray-700">Items without original packaging or certificates</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-6 h-6 bg-red-100 rounded-full flex items-center justify-center mt-0.5">
+                        <XCircle className="h-4 w-4 text-red-600" />
+                      </div>
+                      <span className="text-gray-700">Custom or personalized items</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-6 h-6 bg-red-100 rounded-full flex items-center justify-center mt-0.5">
+                        <XCircle className="h-4 w-4 text-red-600" />
+                      </div>
+                      <span className="text-gray-700">Items returned after 14 days</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-6 h-6 bg-red-100 rounded-full flex items-center justify-center mt-0.5">
+                        <XCircle className="h-4 w-4 text-red-600" />
+                      </div>
+                      <span className="text-gray-700">Change of mind (unless item is faulty)</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Return Process */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Package className="h-5 w-5 text-blue-600" />
+                  4. Return Process
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-blue-600 font-bold text-lg">1</span>
+                    </div>
+                    <h4 className="font-semibold mb-2">Contact Us</h4>
+                    <p className="text-sm text-gray-600">
+                      Get your Return Merchandise Authorization (RMA) number before sending anything back.
+                    </p>
+                    <div className="mt-3 space-y-1 text-xs text-gray-500">
+                      <p>📧 info@aussiecoins.com.au</p>
+                      <p>📞 1300 COINS (26467)</p>
+                    </div>
+                  </div>
+
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-blue-600 font-bold text-lg">2</span>
+                    </div>
+                    <h4 className="font-semibold mb-2">Package Securely</h4>
+                    <p className="text-sm text-gray-600">
+                      Use original packaging, include all certificates, and mark the RMA number clearly.
+                    </p>
+                  </div>
+
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-blue-600 font-bold text-lg">3</span>
+                    </div>
+                    <h4 className="font-semibold mb-2">Ship with Tracking</h4>
+                    <p className="text-sm text-gray-600">
+                      Use trackable, insured shipping. We recommend registered post or courier service.
                     </p>
                   </div>
                 </div>
-              </div>
+              </CardContent>
+            </Card>
 
-              <h2>1. Return Period</h2>
-              <p>
-                You have <strong>14 days</strong> from the date of delivery to return items for a refund, provided they
-                meet our return conditions outlined below.
-              </p>
-
-              <h2>2. Eligible Returns</h2>
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+            {/* Refund Processing */}
+            <Card className="border-l-4 border-l-purple-600">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <RotateCcw className="h-5 w-5 text-purple-600" />
+                  5. Refund Processing
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <h3 className="text-green-800 font-semibold mb-2">We Accept Returns For:</h3>
-                    <ul className="text-green-700 text-sm space-y-1">
-                      <li>Items that arrive damaged or defective</li>
-                      <li>Items that are significantly different from their description</li>
-                      <li>Wrong items sent due to our error</li>
-                      <li>Items in original condition with all packaging and certificates</li>
-                    </ul>
+                    <h4 className="font-semibold mb-3">Timeline</h4>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                        <span className="text-sm">Inspection: 3-5 business days</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                        <span className="text-sm">Refund processing: 5-10 business days</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
+                        <span className="text-sm">Refund to original payment method</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-3">Important Notes</h4>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-3">
+                        <AlertCircle className="h-4 w-4 text-amber-600 flex-shrink-0" />
+                        <span className="text-sm">Original shipping costs are non-refundable</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <AlertCircle className="h-4 w-4 text-amber-600 flex-shrink-0" />
+                        <span className="text-sm">Customer pays return shipping (unless faulty)</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </CardContent>
+            </Card>
 
-              <h2>3. Non-Returnable Items</h2>
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <XCircle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <h3 className="text-red-800 font-semibold mb-2">We Cannot Accept Returns For:</h3>
-                    <ul className="text-red-700 text-sm space-y-1">
-                      <li>Items damaged by mishandling after delivery</li>
-                      <li>Items without original packaging or certificates of authenticity</li>
-                      <li>Custom or personalized items</li>
-                      <li>Items returned after 14 days</li>
-                      <li>Change of mind (unless item is faulty or misrepresented)</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+            {/* Special Cases */}
+            <div className="grid md:grid-cols-2 gap-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">6. Damaged or Defective Items</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 text-sm mb-3">If you receive a damaged or defective item:</p>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li>• Contact us immediately upon receipt</li>
+                    <li>• Provide photos of the damage or defect</li>
+                    <li>• We arrange return shipping at no cost</li>
+                    <li>• Full refund or replacement provided</li>
+                  </ul>
+                </CardContent>
+              </Card>
 
-              <h2>4. Return Process</h2>
-              <h3>Step 1: Contact Us</h3>
-              <p>
-                Before returning any item, you must contact us first to obtain a Return Merchandise Authorization (RMA)
-                number:
-              </p>
-              <ul>
-                <li>Email: info@aussiecoins.com.au</li>
-                <li>Phone: 1300 COINS (26467)</li>
-                <li>Include your order number and reason for return</li>
-              </ul>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">7. Authentication Disputes</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 text-sm mb-3">If you believe an item's authenticity is incorrect:</p>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li>• Contact us within 14 days of delivery</li>
+                    <li>• Provide documentation from recognized grading service</li>
+                    <li>• We may request independent verification</li>
+                    <li>• Resolution based on findings</li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
 
-              <h3>Step 2: Package Your Return</h3>
-              <ul>
-                <li>Use the original packaging when possible</li>
-                <li>Include all certificates of authenticity and documentation</li>
-                <li>Pack securely to prevent damage during transit</li>
-                <li>Include the RMA number clearly marked on the package</li>
-              </ul>
-
-              <h3>Step 3: Ship Your Return</h3>
-              <ul>
-                <li>Use a trackable shipping method with insurance</li>
-                <li>Customer is responsible for return shipping costs (unless item is faulty)</li>
-                <li>We recommend using registered post or courier service</li>
-              </ul>
-
-              <h2>5. Refund Processing</h2>
-              <p>Once we receive and inspect your returned item:</p>
-              <ul>
-                <li>Inspection will be completed within 3-5 business days</li>
-                <li>Approved refunds will be processed within 5-10 business days</li>
-                <li>Refunds will be issued to the original payment method</li>
-                <li>Original shipping costs are non-refundable (unless item is faulty)</li>
-              </ul>
-
-              <h2>6. Exchanges</h2>
-              <p>
-                We do not offer direct exchanges. If you need a different item, please return the original item for a
-                refund and place a new order.
-              </p>
-
-              <h2>7. Damaged or Defective Items</h2>
-              <p>If you receive a damaged or defective item:</p>
-              <ul>
-                <li>Contact us immediately upon receipt</li>
-                <li>Provide photos of the damage or defect</li>
-                <li>We will arrange return shipping at no cost to you</li>
-                <li>Full refund or replacement will be provided</li>
-              </ul>
-
-              <h2>8. Authentication Disputes</h2>
-              <p>If you believe an item's authenticity or grading is incorrect:</p>
-              <ul>
-                <li>Contact us within 14 days of delivery</li>
-                <li>Provide documentation from a recognized grading service</li>
-                <li>We will review the case and may request independent verification</li>
-                <li>Resolution will be provided based on findings</li>
-              </ul>
-
-              <h2>9. Consumer Rights</h2>
-              <p>
-                Under Australian Consumer Law, you have rights that cannot be excluded. Our returns policy is in
-                addition to these rights, not instead of them.
-              </p>
-
-              <h2>10. Contact Us</h2>
-              <p>For any questions about returns or refunds, please contact us:</p>
-              <div className="bg-gray-100 p-4 rounded-lg">
-                <p>
-                  <strong>Aussie Coins</strong>
+            {/* Consumer Rights */}
+            <Card className="bg-blue-50 border border-blue-200">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-blue-800">
+                  <CheckCircle className="h-5 w-5" />
+                  8. Your Consumer Rights
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-blue-800">
+                  Under Australian Consumer Law, you have rights that cannot be excluded. Our returns policy is in
+                  addition to these rights, not instead of them.
                 </p>
-                <p>Adelaide, South Australia</p>
-                <p>Phone: 1300 COINS (26467)</p>
-                <p>Email: info@aussiecoins.com.au</p>
-                <p>Business Hours: Monday - Friday, 9:00 AM - 5:00 PM ACST</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Separator className="my-12" />
+
+          {/* Contact Section */}
+          <Card className="bg-gradient-to-r from-green-600 to-emerald-600 text-white">
+            <CardHeader>
+              <CardTitle className="text-center text-2xl">Need Help with a Return?</CardTitle>
+              <p className="text-center text-green-100">Our team is ready to assist you with any return questions.</p>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-3 gap-6 text-center">
+                <div className="flex flex-col items-center">
+                  <Phone className="h-8 w-8 mb-2" />
+                  <p className="font-semibold">Phone</p>
+                  <p className="text-green-100">1300 COINS (26467)</p>
+                  <p className="text-xs text-green-200 mt-1">Mon-Fri, 9AM-5PM ACST</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <Mail className="h-8 w-8 mb-2" />
+                  <p className="font-semibold">Email</p>
+                  <p className="text-green-100">info@aussiecoins.com.au</p>
+                  <p className="text-xs text-green-200 mt-1">24-48 hour response</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <MapPin className="h-8 w-8 mb-2" />
+                  <p className="font-semibold">Location</p>
+                  <p className="text-green-100">Adelaide, South Australia</p>
+                </div>
               </div>
             </CardContent>
           </Card>
