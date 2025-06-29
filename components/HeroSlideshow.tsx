@@ -38,7 +38,10 @@ export default function HeroSlideshow() {
   useEffect(() => {
     if (slides.length === 0) {
       setImagesLoaded(true)
-      setHasInitiallyLoaded(true)
+      // Add a small delay then trigger the initial load animation
+      setTimeout(() => {
+        setHasInitiallyLoaded(true)
+      }, 100)
       return
     }
 
